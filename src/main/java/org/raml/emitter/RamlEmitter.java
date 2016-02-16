@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.raml.interfaces.emitter.IRamlEmitter;
 import org.raml.interfaces.model.IRaml;
-import org.raml.model.Protocol;
+import org.raml.interfaces.model.Protocol;
 import org.raml.model.Raml;
 import org.raml.model.SecurityReference;
 import org.raml.model.parameter.AbstractParam;

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.raml.interfaces.model.IMimeType;
-import org.raml.interfaces.model.parameter.IAbstractParam;
+import org.raml.interfaces.model.parameter.IParameter;
 import org.raml.model.parameter.FormParameter;
 import org.raml.parser.annotation.Key;
 import org.raml.parser.annotation.Mapping;
@@ -44,7 +44,7 @@ public class MimeType implements Serializable, IMimeType
     private String example;
 
     @Mapping
-    private Map<String, List<IAbstractParam>> formParameters;
+    private Map<String, List<IParameter>> formParameters;
 
     public MimeType()
     {
@@ -95,13 +95,13 @@ public class MimeType implements Serializable, IMimeType
         this.example = example;
     }
 
-    public Map<String, List<IAbstractParam>> getFormParameters()
+    public Map<String, List<IParameter>> getFormParameters()
     {
         //TODO throw exception if invalid type?
         return formParameters;
     }
 
-    public void setFormParameters(Map<String, List<IAbstractParam>> formParameters)
+    public void setFormParameters(Map<String, List<IParameter>> formParameters)
     {
         this.formParameters = formParameters;
     }

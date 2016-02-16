@@ -19,50 +19,53 @@ import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.raml.interfaces.model.IResponse;
+import org.raml.interfaces.model.ISecuritySchemeDescriptor;
+import org.raml.interfaces.model.parameter.IParameter;
 import org.raml.model.parameter.Header;
 import org.raml.model.parameter.QueryParameter;
 import org.raml.parser.annotation.Mapping;
 
-public class SecuritySchemeDescriptor implements Serializable
+public class SecuritySchemeDescriptor implements Serializable, ISecuritySchemeDescriptor
 {
 
     private static final long serialVersionUID = 8752760480882952807L;
 
     @Mapping
-    private Map<String, Header> headers = new LinkedHashMap<String, Header>();
+    private Map<String, IParameter> headers = new LinkedHashMap<String, IParameter>();
 
     @Mapping
-    private Map<String, QueryParameter> queryParameters = new LinkedHashMap<String, QueryParameter>();
+    private Map<String, IParameter> queryParameters = new LinkedHashMap<String, IParameter>();
 
     @Mapping
-    private Map<String, Response> responses = new LinkedHashMap<String, Response>();
+    private Map<String, IResponse> responses = new LinkedHashMap<String, IResponse>();
 
-    public Map<String, Header> getHeaders()
+    public Map<String, IParameter> getHeaders()
     {
         return headers;
     }
 
-    public void setHeaders(Map<String, Header> headers)
+    public void setHeaders(Map<String, IParameter> headers)
     {
         this.headers = headers;
     }
 
-    public Map<String, QueryParameter> getQueryParameters()
+    public Map<String, IParameter> getQueryParameters()
     {
         return queryParameters;
     }
 
-    public void setQueryParameters(Map<String, QueryParameter> queryParameters)
+    public void setQueryParameters(Map<String, IParameter> queryParameters)
     {
         this.queryParameters = queryParameters;
     }
 
-    public Map<String, Response> getResponses()
+    public Map<String, IResponse> getResponses()
     {
         return responses;
     }
 
-    public void setResponses(Map<String, Response> responses)
+    public void setResponses(Map<String, IResponse> responses)
     {
         this.responses = responses;
     }

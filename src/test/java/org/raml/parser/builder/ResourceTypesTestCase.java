@@ -20,14 +20,16 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.raml.model.ActionType;
+import org.raml.interfaces.model.ActionType;
+import org.raml.interfaces.model.IRaml;
+import org.raml.interfaces.model.IResource;
 import org.raml.model.Raml;
 import org.raml.model.Resource;
 
 public class ResourceTypesTestCase extends AbstractRamlTestCase
 {
 
-    private static Raml raml;
+    private static IRaml raml;
 
     @BeforeClass
     public static void init()
@@ -39,7 +41,7 @@ public class ResourceTypesTestCase extends AbstractRamlTestCase
     public void simple()
     {
 
-        Resource simpleResource = raml.getResources().get("/simpleResource");
+        IResource simpleResource = raml.getResources().get("/simpleResource");
         assertThat(simpleResource.getActions().size(), is(1));
         assertThat(simpleResource.getAction(ActionType.GET).getDescription(), is("some description"));
     }
@@ -47,7 +49,7 @@ public class ResourceTypesTestCase extends AbstractRamlTestCase
     @Test
     public void optional()
     {
-        Resource optionalResource = raml.getResources().get("/optionalResource");
+        IResource optionalResource = raml.getResources().get("/optionalResource");
         assertThat(optionalResource.getActions().size(), is(2));
         assertThat(optionalResource.getAction(ActionType.PUT).getDescription(), is("resource put description"));
         assertThat(optionalResource.getAction(ActionType.PUT).getBody().size(), is(2));
@@ -60,11 +62,11 @@ public class ResourceTypesTestCase extends AbstractRamlTestCase
     @Test
     public void parameters()
     {
-        Resource paramsResource = raml.getResources().get("/paramsResource");
+        IResource paramsResource = raml.getResources().get("/paramsResource");
         assertThat(paramsResource.getActions().size(), is(1));
         assertThat(paramsResource.getAction(ActionType.PATCH).getDescription(), is("homemade description"));
 
-        Resource paramsResource2 = raml.getResources().get("/paramsResource2");
+        IResource paramsResource2 = raml.getResources().get("/paramsResource2");
         assertThat(paramsResource2.getActions().size(), is(1));
         assertThat(paramsResource2.getAction(ActionType.DELETE).getDescription(), is("fine description"));
     }
@@ -72,7 +74,7 @@ public class ResourceTypesTestCase extends AbstractRamlTestCase
     @Test
     public void inheritance()
     {
-        Resource inheritanceResource = raml.getResources().get("/inheritanceResource");
+        IResource inheritanceResource = raml.getResources().get("/inheritanceResource");
         assertThat(inheritanceResource.getActions().size(), is(2));
         assertThat(inheritanceResource.getAction(ActionType.GET).getDescription(), is("some description"));
         assertThat(inheritanceResource.getAction(ActionType.POST).getBody().size(), is(1));

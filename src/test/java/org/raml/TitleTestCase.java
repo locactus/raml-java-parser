@@ -22,6 +22,7 @@ import org.apache.commons.io.IOUtils;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
+import org.raml.interfaces.parser.rule.IValidationResult;
 import org.raml.parser.builder.AbstractRamlTestCase;
 import org.raml.parser.rule.ValidationMessage;
 import org.raml.parser.rule.ValidationResult;
@@ -35,7 +36,7 @@ public class TitleTestCase extends AbstractRamlTestCase
     public void whenTitleIsNotDefinedErrorShouldBeShown() throws IOException
     {
         String location = "org/raml/title-not-defined.yaml";
-        List<ValidationResult> errors = validateRaml(location);
+        List<IValidationResult> errors = validateRaml(location);
         Assert.assertFalse("Errors must not be empty", errors.isEmpty());
         Assert.assertThat(errors.get(0).getMessage(), CoreMatchers.is(ValidationMessage.getMissingRuleMessage("title")));
     }

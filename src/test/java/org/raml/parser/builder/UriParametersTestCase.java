@@ -21,9 +21,9 @@ import static org.junit.Assert.assertThat;
 import java.util.Map;
 
 import org.junit.Test;
-import org.raml.model.ParamType;
-import org.raml.model.Raml;
-import org.raml.model.Resource;
+import org.raml.interfaces.model.IRaml;
+import org.raml.interfaces.model.IResource;
+import org.raml.interfaces.model.ParamType;
 
 public class UriParametersTestCase extends AbstractRamlTestCase
 {
@@ -39,8 +39,8 @@ public class UriParametersTestCase extends AbstractRamlTestCase
     @Test
     public void namelessResources()
     {
-        Raml raml = parseRaml(RAML);
-        Map<String, Resource> namelessChildren = raml.getResource("/nameless-children").getResources();
+        IRaml raml = parseRaml(RAML);
+        Map<String, IResource> namelessChildren = raml.getResource("/nameless-children").getResources();
         assertThat(namelessChildren.get("/").getRelativeUri(), is("/"));
         assertThat(namelessChildren.get("/").getUri(), is("/nameless-children/"));
         assertThat(namelessChildren.get("/").getResources().get("/").getRelativeUri(), is("/"));
@@ -51,7 +51,7 @@ public class UriParametersTestCase extends AbstractRamlTestCase
     @Test
     public void namelessRootResources()
     {
-        Raml raml = parseRaml(RAML);
+        IRaml raml = parseRaml(RAML);
         assertThat(raml.getResource("/").getRelativeUri(), is("/"));
         assertThat(raml.getResource("//named").getRelativeUri(), is("/named"));
         assertThat(raml.getResource("//named/").getRelativeUri(), is("/"));
@@ -62,21 +62,21 @@ public class UriParametersTestCase extends AbstractRamlTestCase
     @Test
     public void resourceLikeBaseUriPath()
     {
-        Raml raml = parseRaml(RAML);
-        Resource resource = raml.getResource("/apis");
+        IRaml raml = parseRaml(RAML);
+        IResource resource = raml.getResource("/apis");
         assertThat(resource.getRelativeUri(), is("/apis"));
     }
 
     @Test
     public void parentUriTemplate()
     {
-        Raml raml = parseRaml(RAML);
+        IRaml raml = parseRaml(RAML);
 
-        Resource apiId = raml.getResource("/apis/{apiId}");
+        IResource apiId = raml.getResource("/apis/{apiId}");
         assertThat(apiId.getUriParameters().size(), is(1));
         assertThat(apiId.getUriParameters().get("apiId").getType(), is(ParamType.STRING));
 
-        Resource childId = raml.getResource("/apis/{apiId}/{childId}");
+        IResource childId = raml.getResource("/apis/{apiId}/{childId}");
         assertThat(childId.getUriParameters().size(), is(1));
         assertThat(childId.getResolvedUriParameters().size(), is(2));
         assertThat(childId.getResolvedUriParameters().get("apiId").getType(), is(ParamType.STRING));

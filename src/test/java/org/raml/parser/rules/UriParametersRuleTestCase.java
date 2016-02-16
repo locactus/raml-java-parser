@@ -20,6 +20,7 @@ import java.util.List;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
+import org.raml.interfaces.parser.rule.IValidationResult;
 import org.raml.parser.builder.AbstractRamlTestCase;
 import org.raml.parser.rule.ValidationResult;
 
@@ -31,7 +32,7 @@ public class UriParametersRuleTestCase extends AbstractRamlTestCase
     {
         String raml = "#%RAML 0.8\n" + "---\n" + "title: Salesforce Chatter Communities REST API\n" + "baseUri: https://{param2}.force.com/param\n"
                       + "baseUriParameters:\n" + " param2:\n" + "   displayName: Community Domain\n" + "   type: integer\n" + "   minLength: 35";
-        List<ValidationResult> errors = validateRaml(raml, "");
+        List<IValidationResult> errors = validateRaml(raml, "");
         Assert.assertFalse("Errors must not be empty", errors.isEmpty());
         Assert.assertThat(errors.get(0).getMessage(), CoreMatchers.is("type must be of type string"));
     }
@@ -41,7 +42,7 @@ public class UriParametersRuleTestCase extends AbstractRamlTestCase
     {
         String raml = "#%RAML 0.8\n" + "---\n" + "title: Salesforce Chatter Communities REST API\n" + "baseUri: https://{param2}.force.com/param\n"
                       + "baseUriParameters:\n" + " param2:\n" + "   displayName: Community Domain\n" + "   type: string\n" + "   minLength:";
-        List<ValidationResult> errors = validateRaml(raml, "");
+        List<IValidationResult> errors = validateRaml(raml, "");
         Assert.assertFalse("Errors must not be empty", errors.isEmpty());
         Assert.assertThat(errors.get(0).getMessage(), CoreMatchers.is("minLength can only contain integer values greater than zero"));
         Assert.assertThat(errors.get(1).getMessage(), CoreMatchers.is("minLength can not be empty"));
@@ -52,7 +53,7 @@ public class UriParametersRuleTestCase extends AbstractRamlTestCase
     {
         String raml = "#%RAML 0.8\n" + "---\n" + "title: Salesforce Chatter Communities REST API\n" + "baseUri: https://{param2}.force.com/param\n"
                       + "baseUriParameters:\n" + " param2:\n" + "   displayName: Community Domain\n" + "   minLength: 32";
-        List<ValidationResult> errors = validateRaml(raml, "");
+        List<IValidationResult> errors = validateRaml(raml, "");
         Assert.assertFalse("Errors must not be empty", errors.isEmpty());
         Assert.assertThat(errors.get(0).getMessage(), CoreMatchers.is("type must exist first, and it must be of type string"));
     }
@@ -62,7 +63,7 @@ public class UriParametersRuleTestCase extends AbstractRamlTestCase
     {
         String raml = "#%RAML 0.8\n" + "---\n" + "title: Salesforce Chatter Communities REST API\n" + "baseUri: https://{param2}.force.com/param\n"
                       + "baseUriParameters:\n" + " param2:\n" + "   displayName: Community Domain\n" + " version: v3";
-        List<ValidationResult> errors = validateRaml(raml, "");
+        List<IValidationResult> errors = validateRaml(raml, "");
         Assert.assertFalse("Errors must not be empty", errors.isEmpty());
         Assert.assertThat(errors.get(0).getMessage(), CoreMatchers.is("'version' can not be declared, it is a reserved URI parameter."));
     }
@@ -72,7 +73,7 @@ public class UriParametersRuleTestCase extends AbstractRamlTestCase
     {
         String raml = "#%RAML 0.8\n" + "---\n" + "title: Salesforce Chatter Communities REST API\n" + "baseUri: https://{param2}.force.com/param\n"
                       + "baseUriParameters:\n" + " param2:\n" + "   displayName: Community Domain\n" + "   type: string\n" + "   maxLength:";
-        List<ValidationResult> errors = validateRaml(raml, "");
+        List<IValidationResult> errors = validateRaml(raml, "");
         Assert.assertFalse("Errors must not be empty", errors.isEmpty());
         Assert.assertThat(errors.get(0).getMessage(), CoreMatchers.is("maxLength can only contain integer values greater than zero"));
         Assert.assertThat(errors.get(1).getMessage(), CoreMatchers.is("maxLength can not be empty"));
@@ -83,7 +84,7 @@ public class UriParametersRuleTestCase extends AbstractRamlTestCase
     {
         String raml = "#%RAML 0.8\n" + "---\n" + "title: Salesforce Chatter Communities REST API\n" + "baseUri: https://{param2}.force.com/param\n"
                       + "baseUriParameters:\n" + " param2:\n" + "   displayName: Community Domain\n" + "   type: number\n" + "   minimum:";
-        List<ValidationResult> errors = validateRaml(raml, "");
+        List<IValidationResult> errors = validateRaml(raml, "");
         Assert.assertFalse("Errors must not be empty", errors.isEmpty());
         Assert.assertThat(errors.get(0).getMessage(), CoreMatchers.is("minimum can only contain integer values greater than zero"));
         Assert.assertThat(errors.get(1).getMessage(), CoreMatchers.is("minimum can not be empty"));
@@ -94,7 +95,7 @@ public class UriParametersRuleTestCase extends AbstractRamlTestCase
     {
         String raml = "#%RAML 0.8\n" + "---\n" + "title: Salesforce Chatter Communities REST API\n" + "baseUri: https://{param2}.force.com/param\n"
                       + "baseUriParameters:\n" + " param2:\n" + "   displayName: Community Domain\n" + "   type: integer\n" + "   maximum:";
-        List<ValidationResult> errors = validateRaml(raml, "");
+        List<IValidationResult> errors = validateRaml(raml, "");
         Assert.assertFalse("Errors must not be empty", errors.isEmpty());
         Assert.assertThat(errors.get(0).getMessage(), CoreMatchers.is("maximum can only contain integer values greater than zero"));
         Assert.assertThat(errors.get(1).getMessage(), CoreMatchers.is("maximum can not be empty"));
@@ -105,7 +106,7 @@ public class UriParametersRuleTestCase extends AbstractRamlTestCase
     {
         String raml = "#%RAML 0.8\n" + "---\n" + "title: Salesforce Chatter Communities REST API\n" + "baseUri: https://{param2}.force.com/param\n"
                       + "baseUriParameters:\n" + " param2:\n" + "   displayName: Community Domain\n" + "   type: string\n" + "   minimum: 35";
-        List<ValidationResult> errors = validateRaml(raml, "");
+        List<IValidationResult> errors = validateRaml(raml, "");
         Assert.assertFalse("Errors must not be empty", errors.isEmpty());
         Assert.assertThat(errors.get(0).getMessage(), CoreMatchers.is("type must be of type integer or number"));
     }
@@ -115,7 +116,7 @@ public class UriParametersRuleTestCase extends AbstractRamlTestCase
     {
         String raml = "#%RAML 0.8\n" + "---\n" + "title: Salesforce Chatter Communities REST API\n" + "baseUri: https://{param2}.force.com/param\n"
                       + "baseUriParameters:\n" + " param2:\n" + "   displayName: Community Domain\n" + "   minimum: 32";
-        List<ValidationResult> errors = validateRaml(raml, "");
+        List<IValidationResult> errors = validateRaml(raml, "");
         Assert.assertFalse("Errors must not be empty", errors.isEmpty());
         Assert.assertThat(errors.get(0).getMessage(), CoreMatchers.is("type must exist first, and it must be of type integer or number"));
     }
@@ -125,7 +126,7 @@ public class UriParametersRuleTestCase extends AbstractRamlTestCase
     {
         String raml = "#%RAML 0.8\n" + "---\n" + "title: Salesforce Chatter Communities REST API\n" + "baseUri: https://{param2}.force.com/param\n"
                       + "baseUriParameters:\n" + " param2:\n" + "   displayName: Community Domain\n" + "   maxLength: 32";
-        List<ValidationResult> errors = validateRaml(raml, "");
+        List<IValidationResult> errors = validateRaml(raml, "");
         Assert.assertFalse("Errors must not be empty", errors.isEmpty());
         Assert.assertThat(errors.get(0).getMessage(), CoreMatchers.is("type must exist first, and it must be of type string"));
     }
@@ -135,7 +136,7 @@ public class UriParametersRuleTestCase extends AbstractRamlTestCase
     {
         String raml = "#%RAML 0.8\n" + "---\n" + "title: Salesforce Chatter Communities REST API\n" + "baseUri: https://{param2}.force.com/{param1}\n"
                       + "baseUriParameters:\n" + " param2:\n" + "   displayName: Community Domain";
-        List<ValidationResult> errors = validateRaml(raml, "");
+        List<IValidationResult> errors = validateRaml(raml, "");
         Assert.assertTrue("Errors must be empty", errors.isEmpty());
     }
 
@@ -144,7 +145,7 @@ public class UriParametersRuleTestCase extends AbstractRamlTestCase
     {
         String raml = "#%RAML 0.8\n" + "---\n" + "title: Salesforce Chatter Communities REST API\n" + "baseUri: https://{param2}.force.com/param\n"
                       + "baseUriParameters:\n" + " param2:\n" + "   displayName: Community Domain\n" + "   type: string\n" + "   required: 'o'";
-        List<ValidationResult> errors = validateRaml(raml, "");
+        List<IValidationResult> errors = validateRaml(raml, "");
         Assert.assertFalse("Errors must not be empty", errors.isEmpty());
         Assert.assertThat(errors.get(0).getMessage(), CoreMatchers.is("Type mismatch: required must be of type boolean"));
     }
@@ -154,7 +155,7 @@ public class UriParametersRuleTestCase extends AbstractRamlTestCase
     {
         String raml = "#%RAML 0.8\n" + "---\n" + "title: Salesforce Chatter Communities REST API\n" + "baseUri: https://{param2}.force.com/param\n"
                       + "baseUriParameters:\n" + " param2:\n" + "   displayName: Community Domain\n" + "   type: string\n" + "   required: 'y'";
-        List<ValidationResult> errors = validateRaml(raml, "");
+        List<IValidationResult> errors = validateRaml(raml, "");
         Assert.assertTrue("Errors must not be empty", errors.isEmpty());
     }
 }

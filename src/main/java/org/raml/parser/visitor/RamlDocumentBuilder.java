@@ -26,9 +26,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.raml.interfaces.model.IRaml;
 import org.raml.interfaces.parser.loader.ResourceLoader;
 import org.raml.interfaces.parser.tagresolver.TagResolver;
 import org.raml.interfaces.parser.visitor.IRamlDocumentBuilder;
+import org.raml.interfaces.parser.visitor.IYamlDocumentBuilder;
 import org.raml.interfaces.parser.visitor.TupleType;
 import org.raml.model.Raml;
 import org.raml.model.Resource;
@@ -40,7 +42,7 @@ import org.raml.parser.tagresolver.JacksonTagResolver;
 import org.raml.parser.tagresolver.JaxbTagResolver;
 import org.yaml.snakeyaml.nodes.MappingNode;
 
-public class RamlDocumentBuilder extends YamlDocumentBuilder<Raml> implements IRamlDocumentBuilder
+public class RamlDocumentBuilder extends YamlDocumentBuilder<IRaml> implements IYamlDocumentBuilder<IRaml>
 {
 
     private TemplateResolver templateResolver;
@@ -53,7 +55,7 @@ public class RamlDocumentBuilder extends YamlDocumentBuilder<Raml> implements IR
 
     public RamlDocumentBuilder(ResourceLoader resourceLoader, TagResolver... tagResolvers)
     {
-        super(Raml.class, resourceLoader, defaultResolver(tagResolvers));
+        super(IRaml.class, resourceLoader, defaultResolver(tagResolvers));
     }
 
     private static TagResolver[] defaultResolver(TagResolver[] tagResolvers)
@@ -156,7 +158,7 @@ public class RamlDocumentBuilder extends YamlDocumentBuilder<Raml> implements IR
     private void compileGlobalSchemas()
     {
         SchemaCompiler compiler = SchemaCompiler.getInstance();
-        Raml raml = getDocumentObject();
+        IRaml raml = getDocumentObject();
         Map<String, Object> compiledSchemas = new HashMap<String, Object>();
         List<Map<String, String>> schemas = raml.getSchemas();
         for (Map<String, String> schemaMap : schemas)

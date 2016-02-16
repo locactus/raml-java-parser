@@ -17,7 +17,7 @@ package org.raml.parser.builder;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.raml.model.ActionType.POST;
+import static org.raml.interfaces.model.ActionType.POST;
 
 import java.util.List;
 import java.util.Map;
@@ -25,12 +25,10 @@ import java.util.Map;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
-import org.raml.model.ActionType;
-import org.raml.model.ParamType;
-import org.raml.model.Raml;
-import org.raml.model.parameter.FormParameter;
-import org.raml.model.parameter.QueryParameter;
-import org.raml.model.parameter.UriParameter;
+import org.raml.interfaces.model.ActionType;
+import org.raml.interfaces.model.IRaml;
+import org.raml.interfaces.model.ParamType;
+import org.raml.interfaces.model.parameter.IParameter;
 
 public class ParameterTestCase extends AbstractRamlTestCase
 {
@@ -40,30 +38,30 @@ public class ParameterTestCase extends AbstractRamlTestCase
     @Test
     public void whenParameterIsYRequiredShouldBeTrue()
     {
-        Raml raml = parseRaml(ramlSource);
-        UriParameter uriParameter = raml.getBaseUriParameters().get("param2");
+        IRaml raml = parseRaml(ramlSource);
+        IParameter uriParameter = raml.getBaseUriParameters().get("param2");
         assertThat(uriParameter.isRequired(), is(true));
     }
 
     @Test
     public void typeFile()
     {
-        Raml raml = parseRaml(ramlSource);
-        QueryParameter queryParameter = raml.getResources().get("/resource").getAction(ActionType.GET).getQueryParameters().get("param");
+        IRaml raml = parseRaml(ramlSource);
+        IParameter queryParameter = raml.getResources().get("/resource").getAction(ActionType.GET).getQueryParameters().get("param");
         assertThat(queryParameter.getType(), is(ParamType.FILE));
     }
 
     @Test
     public void whenParameterHasMultiTypeOrSingleTypeShouldBeAccepted()
     {
-        Raml raml = parseRaml("org/raml/params/parameter-multi-type.yaml");
+        IRaml raml = parseRaml("org/raml/params/parameter-multi-type.yaml");
 
-        Map<String, List<FormParameter>> formParameters = raml.getResources().get("/simple").getAction(POST).getBody().get("multipart/form-data").getFormParameters();
+        Map<String, List<IParameter>> formParameters = raml.getResources().get("/simple").getAction(POST).getBody().get("multipart/form-data").getFormParameters();
 
-        FormParameter uriParameter = formParameters.get("acl").get(0);
+        IParameter uriParameter = formParameters.get("acl").get(0);
         Assert.assertThat(uriParameter.getType(), CoreMatchers.is(ParamType.STRING));
 
-        List<FormParameter> file = formParameters.get("file");
+        List<IParameter> file = formParameters.get("file");
         Assert.assertThat(file.size(), CoreMatchers.is(2));
 
         uriParameter = file.get(0);

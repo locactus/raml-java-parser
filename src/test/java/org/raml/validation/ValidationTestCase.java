@@ -20,14 +20,18 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.containsString;
 import static org.raml.parser.rule.ValidationMessage.NON_SCALAR_KEY_MESSAGE;
-import static org.raml.parser.rule.ValidationResult.Level.ERROR;
-import static org.raml.parser.rule.ValidationResult.Level.WARN;
+import static org.raml.interfaces.parser.rule.IValidationResult.Level.ERROR;
+import static org.raml.interfaces.parser.rule.IValidationResult.Level.WARN;
 import static org.raml.parser.rule.ValidationResult.getLevel;
 
 import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.raml.interfaces.model.IRaml;
+import org.raml.interfaces.parser.rule.IValidationResult;
+import org.raml.interfaces.parser.tagresolver.IContextPath;
+import org.raml.interfaces.parser.visitor.IIncludeInfo;
 import org.raml.model.Raml;
 import org.raml.parser.builder.AbstractRamlTestCase;
 import org.raml.parser.rule.ValidationResult;
@@ -40,7 +44,7 @@ public class ValidationTestCase extends AbstractRamlTestCase
     @Test
     public void sequenceTemplateExpected()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/validation/sequence-template-expected.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/validation/sequence-template-expected.yaml");
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), is("Sequence expected"));
     }
@@ -48,7 +52,7 @@ public class ValidationTestCase extends AbstractRamlTestCase
     @Test
     public void sequenceExpected()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/validation/sequence-expected.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/validation/sequence-expected.yaml");
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), is("Invalid value type"));
     }
@@ -56,7 +60,7 @@ public class ValidationTestCase extends AbstractRamlTestCase
     @Test
     public void invalidCustomTag()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/validation/invalid-tag.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/validation/invalid-tag.yaml");
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), is("Unknown tag !import"));
     }
@@ -64,7 +68,7 @@ public class ValidationTestCase extends AbstractRamlTestCase
     @Test
     public void invalidIncludeTag()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/validation/invalid-include.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/validation/invalid-include.yaml");
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), is("Include cannot be non-scalar"));
     }
@@ -72,7 +76,7 @@ public class ValidationTestCase extends AbstractRamlTestCase
     @Test
     public void missingTemplate()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/validation/missing-template.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/validation/missing-template.yaml");
         assertThat(validationResults.size(), is(2));
         assertThat(validationResults.get(0).getMessage(), is("trait not defined: paged"));
         assertThat(validationResults.get(1).getMessage(), is("resource type not defined: collection"));
@@ -81,7 +85,7 @@ public class ValidationTestCase extends AbstractRamlTestCase
     @Test
     public void missingTemplateReference()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/validation/missing-template-reference.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/validation/missing-template-reference.yaml");
         assertThat(validationResults.size(), is(2));
         assertThat(validationResults.get(0).getMessage(), is("sequence node expected"));
         assertThat(validationResults.get(1).getMessage(), is("type can not be empty"));
@@ -90,7 +94,7 @@ public class ValidationTestCase extends AbstractRamlTestCase
     @Test
     public void mapExpected()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/validation/map-expected.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/validation/map-expected.yaml");
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), is("Mapping expected"));
     }
@@ -98,7 +102,7 @@ public class ValidationTestCase extends AbstractRamlTestCase
     @Test
     public void nonScalarKeys()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/validation/non-scalar-keys.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/validation/non-scalar-keys.yaml");
         int expectedErrors = 6;
         assertThat(validationResults.size(), is(expectedErrors));
         for (int i = 0; i < expectedErrors; i++)
@@ -110,7 +114,7 @@ public class ValidationTestCase extends AbstractRamlTestCase
     @Test
     public void invalidActionElement()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/validation/invalid-action-element.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/validation/invalid-action-element.yaml");
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), is("Invalid value type"));
     }
@@ -118,7 +122,7 @@ public class ValidationTestCase extends AbstractRamlTestCase
     @Test
     public void nonScalarGlobalSchema()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/validation/invalid-global-schema.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/validation/invalid-global-schema.yaml");
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), is("Invalid value type"));
     }
@@ -126,7 +130,7 @@ public class ValidationTestCase extends AbstractRamlTestCase
     @Test
     public void duplicateMapEntry()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/validation/duplicate-map-entries.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/validation/duplicate-map-entries.yaml");
         assertThat(validationResults.size(), is(3));
         assertThat(validationResults.get(0).getMessage(), is("Duplicate headers"));
         assertThat(validationResults.get(1).getMessage(), is("Duplicate actions"));
@@ -136,7 +140,7 @@ public class ValidationTestCase extends AbstractRamlTestCase
     @Test
     public void emptyRaml()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/validation/empty.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/validation/empty.yaml");
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), is("Invalid RAML"));
     }
@@ -145,9 +149,9 @@ public class ValidationTestCase extends AbstractRamlTestCase
     public void typesWithParams()
     {
         String resource = "org/raml/validation/se-types-params.yaml";
-        List<ValidationResult> validationResults = validateRaml(resource);
+        List<IValidationResult> validationResults = validateRaml(resource);
         assertThat(validationResults.size(), is(0));
-        Raml raml = parseRaml(resource);
+        IRaml raml = parseRaml(resource);
         assertThat(raml.getTitle(), is("Example API"));
     }
 
@@ -155,9 +159,9 @@ public class ValidationTestCase extends AbstractRamlTestCase
     public void github()
     {
         String resource = "org/raml/validation/github-api-v3.raml";
-        List<ValidationResult> validationResults = validateRaml(resource);
+        List<IValidationResult> validationResults = validateRaml(resource);
         assertThat(validationResults.size(), is(0));
-        Raml raml = parseRaml(resource);
+        IRaml raml = parseRaml(resource);
         assertThat(raml.getTitle(), is("GitHub API"));
     }
 
@@ -165,9 +169,9 @@ public class ValidationTestCase extends AbstractRamlTestCase
     public void nullTemplateParameters()
     {
         String resource = "org/raml/validation/null-template-params.raml";
-        List<ValidationResult> validationResults = validateRaml(resource);
+        List<IValidationResult> validationResults = validateRaml(resource);
         assertThat(validationResults.size(), is(0));
-        Raml raml = parseRaml(resource);
+        IRaml raml = parseRaml(resource);
         assertThat(raml.getTitle(), is("Template params API"));
     }
 
@@ -175,9 +179,9 @@ public class ValidationTestCase extends AbstractRamlTestCase
     public void instagram()
     {
         String resource = "org/raml/validation/instagram-api.raml";
-        List<ValidationResult> validationResults = validateRaml(resource);
+        List<IValidationResult> validationResults = validateRaml(resource);
         assertThat(validationResults.size(), is(0));
-        Raml raml = parseRaml(resource);
+        IRaml raml = parseRaml(resource);
         assertThat(raml.getTitle(), is("Instagram API"));
     }
 
@@ -185,7 +189,7 @@ public class ValidationTestCase extends AbstractRamlTestCase
     public void indentationBroken()
     {
         String resource = "org/raml/validation/indentation-broken.raml";
-        List<ValidationResult> validationResults = validateRaml(resource);
+        List<IValidationResult> validationResults = validateRaml(resource);
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), is("expected <block end>, but found BlockMappingStart"));
         assertThat(validationResults.get(0).getLine() + 1, is(12));
@@ -195,7 +199,7 @@ public class ValidationTestCase extends AbstractRamlTestCase
     public void circularReference()
     {
         String resource = "org/raml/validation/circular-reference.yaml";
-        List<ValidationResult> validationResults = validateRaml(resource);
+        List<IValidationResult> validationResults = validateRaml(resource);
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), is("Circular reference detected"));
         assertThat(validationResults.get(0).getLine() + 1, is(3));
@@ -205,13 +209,13 @@ public class ValidationTestCase extends AbstractRamlTestCase
     public void circularInclude()
     {
         String resource = "org/raml/validation/circular-include.yaml";
-        List<ValidationResult> validationResults = validateRaml(resource);
+        List<IValidationResult> validationResults = validateRaml(resource);
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), is("Circular reference detected"));
         assertThat(validationResults.get(0).getLine() + 1, is(1));
-        ContextPath includeContext = validationResults.get(0).getIncludeContext();
+        IContextPath includeContext = validationResults.get(0).getIncludeContext();
         assertThat(includeContext.size(), is(4));
-        IncludeInfo includeInfo = includeContext.pop();
+        IIncludeInfo includeInfo = includeContext.pop();
         assertThat(includeInfo.getIncludeName(), containsString("circular1.raml"));
         assertThat(includeInfo.getLine() + 1, is(2));
         includeInfo = includeContext.pop();
@@ -226,7 +230,7 @@ public class ValidationTestCase extends AbstractRamlTestCase
     public void badMediaTypeName()
     {
         String resource = "org/raml/validation/bad-media-type.yaml";
-        List<ValidationResult> validationResults = validateRaml(resource);
+        List<IValidationResult> validationResults = validateRaml(resource);
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), is("Unknown key: nonslash"));
     }
@@ -235,7 +239,7 @@ public class ValidationTestCase extends AbstractRamlTestCase
     public void missingColon()
     {
         String resource = "org/raml/validation/missing-colon.yaml";
-        List<ValidationResult> validationResults = validateRaml(resource);
+        List<IValidationResult> validationResults = validateRaml(resource);
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getIncludeName(), nullValue());
         assertThat(validationResults.get(0).getMessage(), containsString("expected ':'"));
@@ -245,7 +249,7 @@ public class ValidationTestCase extends AbstractRamlTestCase
     public void defaultFileResourceLoader()
     {
         String resource = "src/test/resources/org/raml/validation/missing-colon.yaml";
-        List<ValidationResult> validationResults = validateRaml(resource);
+        List<IValidationResult> validationResults = validateRaml(resource);
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getIncludeName(), nullValue());
         assertThat(validationResults.get(0).getMessage(), containsString("expected ':'"));
@@ -261,7 +265,7 @@ public class ValidationTestCase extends AbstractRamlTestCase
                 "/help:\n" +
                 "  description:";
 
-        List<ValidationResult> validationResults = validateRaml(raml, "");
+        List<IValidationResult> validationResults = validateRaml(raml, "");
         assertThat(validationResults.size(), is(2));
         assertThat(getLevel(WARN, validationResults).size(), is(2));
         assertThat(getLevel(ERROR, validationResults).size(), is(0));
@@ -276,7 +280,7 @@ public class ValidationTestCase extends AbstractRamlTestCase
                 "/resourceName:\n" +
                 "  is:";
 
-        List<ValidationResult> validationResults = validateRaml(raml, "");
+        List<IValidationResult> validationResults = validateRaml(raml, "");
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), is("sequence node expected"));
     }
@@ -291,7 +295,7 @@ public class ValidationTestCase extends AbstractRamlTestCase
                 "baseUri: http://localhost/api/{version}\n" +
                 "version: v1";
 
-        List<ValidationResult> validationResults = validateRaml(raml, "");
+        List<IValidationResult> validationResults = validateRaml(raml, "");
         assertThat(validationResults.size(), is(0));
     }
 }

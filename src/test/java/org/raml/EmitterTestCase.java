@@ -27,7 +27,11 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.raml.emitter.RamlEmitter;
-import org.raml.interfaces.model.parameter.IAbstractParam;
+import org.raml.interfaces.emitter.IRamlEmitter;
+import org.raml.interfaces.model.IDocumentationItem;
+import org.raml.interfaces.model.IRaml;
+import org.raml.interfaces.model.parameter.IParameter;
+import org.raml.interfaces.parser.visitor.IRamlDocumentBuilder;
 import org.raml.model.DocumentationItem;
 import org.raml.model.Raml;
 import org.raml.model.SecurityScheme;
@@ -44,8 +48,8 @@ public class EmitterTestCase extends AbstractRamlTestCase
     @Test
     public void emitFullConfigFromRaml()
     {
-        Raml raml = parseRaml("org/raml/full-config.yaml");
-        RamlEmitter emitter = new RamlEmitter();
+        IRaml raml = parseRaml("org/raml/full-config.yaml");
+        IRamlEmitter emitter = new RamlEmitter();
         String dumpFromRaml = emitter.dump(raml);
         verifyFullDump(raml, dumpFromRaml);
     }
@@ -53,8 +57,8 @@ public class EmitterTestCase extends AbstractRamlTestCase
     @Test
     public void emitFullConfigFromAst()
     {
-        RamlDocumentBuilder builder = new RamlDocumentBuilder();
-        Raml raml = parseRaml("org/raml/full-config.yaml", builder);
+        IRamlDocumentBuilder builder = new RamlDocumentBuilder();
+        IRaml raml = parseRaml("org/raml/full-config.yaml", builder);
         String dumpFromAst = YamlDocumentBuilder.dumpFromAst(builder.getRootNode());
         verifyDump(raml, dumpFromAst);
     }
@@ -62,8 +66,8 @@ public class EmitterTestCase extends AbstractRamlTestCase
     @Test
     public void emitConfigWithIncludesFromAst()
     {
-        RamlDocumentBuilder builder = new RamlDocumentBuilder();
-        Raml raml = parseRaml("org/raml/root-elements-includes.yaml", builder);
+        IRamlDocumentBuilder builder = new RamlDocumentBuilder();
+        IRaml raml = parseRaml("org/raml/root-elements-includes.yaml", builder);
         String dumpFromAst = YamlDocumentBuilder.dumpFromAst(builder.getRootNode());
         verifyDump(raml, dumpFromAst);
     }
@@ -71,7 +75,7 @@ public class EmitterTestCase extends AbstractRamlTestCase
     @Test
     public void emitEmptyBody()
     {
-        Raml raml = parseRaml("org/raml/empty-body.raml");
+        IRaml raml = parseRaml("org/raml/empty-body.raml");
         RamlEmitter emitter = new RamlEmitter();
         emitter.dump(raml);
     }
@@ -79,7 +83,7 @@ public class EmitterTestCase extends AbstractRamlTestCase
     @Test
     public void emitRegexp()
     {
-        Raml raml = parseRaml("org/raml/emitter/pattern.yaml");
+        IRaml raml = parseRaml("org/raml/emitter/pattern.yaml");
         RamlEmitter emitter = new RamlEmitter();
         String dump = emitter.dump(raml);
         assertThat(dump, containsString("([a-zA-Z0-9_\\.\\+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-\\.]+)"));
@@ -101,7 +105,7 @@ public class EmitterTestCase extends AbstractRamlTestCase
                       "    type: number\n" +
                       "    maximum: 9.5\n" +
                       "    minimum: 2.0";
-        Raml raml = parseRaml(yaml, "");
+        IRaml raml = parseRaml(yaml, "");
         RamlEmitter emitter = new RamlEmitter();
         String dump = emitter.dump(raml);
         assertThat(dump, containsString("maximum: 8"));
@@ -113,10 +117,10 @@ public class EmitterTestCase extends AbstractRamlTestCase
         assertThat(dump, not(containsString("minimum: 2.0")));
     }
 
-    private Raml verifyDump(Raml source, String dump)
+    private IRaml verifyDump(IRaml source, String dump)
     {
         RamlDocumentBuilder verifier = new RamlDocumentBuilder();
-        Raml target = verifier.build(dump, "");
+        IRaml target = verifier.build(dump, "");
 
         assertThat(target.getTitle(), is(source.getTitle()));
         assertThat(target.getVersion(), is(source.getVersion()));
@@ -128,9 +132,9 @@ public class EmitterTestCase extends AbstractRamlTestCase
         return target;
     }
 
-    private void verifyFullDump(Raml source, String dump)
+    private void verifyFullDump(IRaml source, String dump)
     {
-        Raml target = verifyDump(source, dump);
+        IRaml target = verifyDump(source, dump);
 
         //*********** URI PARAMETERS ***********
 
@@ -159,8 +163,8 @@ public class EmitterTestCase extends AbstractRamlTestCase
 
         //*********** DOCUMENTATION ***********
 
-        List<DocumentationItem> srcDoc = source.getDocumentation();
-        List<DocumentationItem> tgtDoc = target.getDocumentation();
+        List<IDocumentationItem> srcDoc = source.getDocumentation();
+        List<IDocumentationItem> tgtDoc = target.getDocumentation();
         assertThat(tgtDoc.get(0).getTitle(), is(srcDoc.get(0).getTitle()));
         assertThat(tgtDoc.get(0).getContent(), is(srcDoc.get(0).getContent()));
 
@@ -173,9 +177,8 @@ public class EmitterTestCase extends AbstractRamlTestCase
         assertThat(tgtSchemas.get(1).get("league-xml"), is(srcSchemas.get(1).get("league-xml")));
 
         //*********** FORM PARAMETERS ***********
-//todo is this ok??
-        Map<String, List<IAbstractParam>> srcFormParams = source.getResource("/media").getAction(GET).getBody().get("multipart/form-data").getFormParameters();
-        Map<String, List<IAbstractParam>> tgtFormParams = target.getResource("/media").getAction(GET).getBody().get("multipart/form-data").getFormParameters();
+        Map<String, List<IParameter>> srcFormParams = source.getResource("/media").getAction(GET).getBody().get("multipart/form-data").getFormParameters();
+        Map<String, List<IParameter>> tgtFormParams = target.getResource("/media").getAction(GET).getBody().get("multipart/form-data").getFormParameters();
         assertThat(srcFormParams.size(), is(tgtFormParams.size()));
         assertThat(srcFormParams.get("form-1").size(), is(tgtFormParams.get("form-1").size()));
         assertThat(srcFormParams.get("form-1").get(0).getDisplayName(), is(tgtFormParams.get("form-1").get(0).getDisplayName()));

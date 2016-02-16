@@ -25,6 +25,9 @@ import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.raml.interfaces.parser.rule.IValidationResult;
+import org.raml.interfaces.parser.tagresolver.IContextPath;
+import org.raml.interfaces.parser.visitor.IIncludeInfo;
 import org.raml.parser.builder.AbstractRamlTestCase;
 import org.raml.parser.rule.ValidationResult;
 import org.raml.parser.tagresolver.ContextPath;
@@ -54,7 +57,7 @@ public class SchemaRuleTestCase extends AbstractRamlTestCase
     @Test
     public void invalidJsonSchema()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/schema/invalid-json.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/schema/invalid-json.yaml");
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), containsString("invalid JSON schema"));
         assertThat(validationResults.get(0).getLine() + 1, is(7 + 4));
@@ -63,7 +66,7 @@ public class SchemaRuleTestCase extends AbstractRamlTestCase
     @Test
     public void invalidJsonSchemaValidJson()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/schema/invalid-json-schema.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/schema/invalid-json-schema.yaml");
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), allOf(
                 containsString("invalid JSON schema"), containsString("value has incorrect type")));
@@ -73,7 +76,7 @@ public class SchemaRuleTestCase extends AbstractRamlTestCase
     @Test
     public void invalidJsonSchemaGlobal()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/schema/invalid-json-global.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/schema/invalid-json-global.yaml");
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), containsString("invalid JSON schema (league)"));
         assertThat(validationResults.get(0).getLine() + 1, is(4 + 4));
@@ -83,15 +86,15 @@ public class SchemaRuleTestCase extends AbstractRamlTestCase
     public void invalidJsonSchemaInclude()
     {
         String resource = "org/raml/schema/invalid.json";
-        List<ValidationResult> validationResults = validateRaml("org/raml/schema/invalid-json-include.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/schema/invalid-json-include.yaml");
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), containsString("invalid JSON schema (" + resource + ")"));
         assertThat(validationResults.get(0).getLine() + 1, is(4));
         assertThat(validationResults.get(0).getStartColumn(), is(UNKNOWN));
         assertThat(validationResults.get(0).getEndColumn(), is(UNKNOWN));
-        ContextPath includeContext = validationResults.get(0).getIncludeContext();
+        IContextPath includeContext = validationResults.get(0).getIncludeContext();
         assertThat(includeContext.size(), is(2));
-        IncludeInfo includeInfo = includeContext.pop();
+        IIncludeInfo includeInfo = includeContext.pop();
         assertThat(includeInfo.getLine() + 1, is(7));
         assertThat(includeInfo.getStartColumn() + 1, is(25));
         assertThat(includeInfo.getEndColumn() + 1, is(46));
@@ -101,7 +104,7 @@ public class SchemaRuleTestCase extends AbstractRamlTestCase
     @Test
     public void invalidJsonSchemaGlobalTemplate()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/schema/invalid-json-global-template.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/schema/invalid-json-global-template.yaml");
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), containsString("invalid JSON schema (put-leagues)"));
         assertThat(validationResults.get(0).getLine() + 1, is(4 + 4));
@@ -112,15 +115,15 @@ public class SchemaRuleTestCase extends AbstractRamlTestCase
     {
         String resource = "org/raml/schema/invalid.json";
         String globalSchema = "league";
-        List<ValidationResult> validationResults = validateRaml("org/raml/schema/invalid-json-global-include.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/schema/invalid-json-global-include.yaml");
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), containsString("invalid JSON schema (" + globalSchema + ")"));
         assertThat(validationResults.get(0).getLine() + 1, is(4));
         assertThat(validationResults.get(0).getStartColumn(), is(UNKNOWN));
         assertThat(validationResults.get(0).getEndColumn(), is(UNKNOWN));
-        ContextPath includeContext = validationResults.get(0).getIncludeContext();
+        IContextPath includeContext = validationResults.get(0).getIncludeContext();
         assertThat(includeContext.size(), is(2));
-        IncludeInfo includeInfo = includeContext.pop();
+        IIncludeInfo includeInfo = includeContext.pop();
         assertThat(includeInfo.getLine() + 1, is(4));
         assertThat(includeInfo.getStartColumn() + 1, is(15));
         assertThat(includeInfo.getEndColumn() + 1, is(36));
@@ -133,15 +136,15 @@ public class SchemaRuleTestCase extends AbstractRamlTestCase
     {
         String resource = "org/raml/schema/invalid-sequence-include.yaml";
         String globalSchema = "league";
-        List<ValidationResult> validationResults = validateRaml("org/raml/schema/invalid-json-global-sequence-include.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/schema/invalid-json-global-sequence-include.yaml");
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), containsString("invalid JSON schema (" + globalSchema + ")"));
         assertThat(validationResults.get(0).getLine() + 1, is(5));
         assertThat(validationResults.get(0).getStartColumn(), is(UNKNOWN));
         assertThat(validationResults.get(0).getEndColumn(), is(UNKNOWN));
-        ContextPath includeContext = validationResults.get(0).getIncludeContext();
+        IContextPath includeContext = validationResults.get(0).getIncludeContext();
         assertThat(includeContext.size(), is(2));
-        IncludeInfo includeInfo = includeContext.pop();
+        IIncludeInfo includeInfo = includeContext.pop();
         assertThat(includeInfo.getLine() + 1, is(4));
         assertThat(includeInfo.getStartColumn() + 1, is(15));
         assertThat(includeInfo.getEndColumn() + 1, is(52));
@@ -157,14 +160,14 @@ public class SchemaRuleTestCase extends AbstractRamlTestCase
     @Test
     public void validUtf8IncludeUtf16XmlSchema()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/schema/valid-xml-utf8-include-utf16.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/schema/valid-xml-utf8-include-utf16.yaml");
         assertThat(validationResults.size(), is(0));
     }
 
     @Test
     public void invalidXmlSchema()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/schema/invalid-xml.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/schema/invalid-xml.yaml");
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), containsString("invalid XML schema"));
         assertThat(validationResults.get(0).getLine() + 1, is(7 + 8));
@@ -179,7 +182,7 @@ public class SchemaRuleTestCase extends AbstractRamlTestCase
     @Test
     public void invalidXmlSchemaGlobal()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/schema/invalid-xml-global.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/schema/invalid-xml-global.yaml");
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), containsString("invalid XML schema"));
         assertThat(validationResults.get(0).getLine() + 1, is(4 + 8));
@@ -190,15 +193,15 @@ public class SchemaRuleTestCase extends AbstractRamlTestCase
     public void invalidXmlSchemaInclude()
     {
         String resource = "org/raml/schema/invalid.xsd";
-        List<ValidationResult> validationResults = validateRaml("org/raml/schema/invalid-xml-include.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/schema/invalid-xml-include.yaml");
         assertThat(validationResults.size(), is(1));
         assertThat(validationResults.get(0).getMessage(), containsString("invalid XML schema (" + resource + ")"));
         assertThat(validationResults.get(0).getLine() + 1, is(8));
         assertThat(validationResults.get(0).getStartColumn(), is(UNKNOWN));
         assertThat(validationResults.get(0).getEndColumn(), is(UNKNOWN));
-        ContextPath includeContext = validationResults.get(0).getIncludeContext();
+        IContextPath includeContext = validationResults.get(0).getIncludeContext();
         assertThat(includeContext.size(), is(2));
-        IncludeInfo includeInfo = includeContext.pop();
+        IIncludeInfo includeInfo = includeContext.pop();
         assertThat(includeInfo.getLine() + 1, is(7));
         assertThat(includeInfo.getStartColumn() + 1, is(25));
         assertThat(includeInfo.getEndColumn() + 1, is(45));
@@ -208,14 +211,14 @@ public class SchemaRuleTestCase extends AbstractRamlTestCase
     @Test
     public void validXsdInclude()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/schema/xsd-includer.raml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/schema/xsd-includer.raml");
         assertThat(validationResults.size(), is(0));
     }
 
     @Test
     public void validGlobalXsdInclude()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/schema/xsd-global-includer.raml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/schema/xsd-global-includer.raml");
         assertThat(validationResults.size(), is(0));
     }
 
@@ -223,14 +226,14 @@ public class SchemaRuleTestCase extends AbstractRamlTestCase
     @Test
     public void validJsonSchemaRef()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/schema/json-schema-ref.raml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/schema/json-schema-ref.raml");
         assertThat(validationResults.size(), is(0));
     }
 
     @Test
     public void validGlobalJsonSchemaRef()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/schema/json-schema-global-ref.raml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/schema/json-schema-global-ref.raml");
         assertThat(validationResults.size(), is(0));
     }
 

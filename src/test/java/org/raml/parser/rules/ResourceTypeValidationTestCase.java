@@ -22,6 +22,7 @@ import static org.junit.Assert.assertThat;
 import java.util.List;
 
 import org.junit.Test;
+import org.raml.interfaces.parser.rule.IValidationResult;
 import org.raml.parser.builder.AbstractRamlTestCase;
 import org.raml.parser.rule.ValidationResult;
 
@@ -32,7 +33,7 @@ public class ResourceTypeValidationTestCase extends AbstractRamlTestCase
     public void noParentResourceType() throws Exception
     {
         String location = "org/raml/parser/rules/resource-type-invalid.yaml";
-        List<ValidationResult> errors = validateRaml(location);
+        List<IValidationResult> errors = validateRaml(location);
         assertThat(errors.size(), is(1));
         assertThat(errors.get(0).getMessage(), containsString("resource type not defined: base"));
     }

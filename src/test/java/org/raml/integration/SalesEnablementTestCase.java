@@ -18,7 +18,7 @@ package org.raml.integration;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.raml.model.ActionType.GET;
+import static org.raml.interfaces.model.ActionType.GET;
 
 import java.util.List;
 import java.util.Map;
@@ -26,13 +26,14 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.raml.model.Action;
-import org.raml.model.ActionType;
-import org.raml.model.Raml;
-import org.raml.model.Resource;
-import org.raml.model.parameter.QueryParameter;
+import org.raml.interfaces.model.IAction;
+import org.raml.interfaces.model.IRaml;
+import org.raml.interfaces.model.IResource;
+import org.raml.interfaces.model.parameter.IParameter;
+import org.raml.interfaces.model.ActionType;
+import org.raml.interfaces.parser.rule.IValidationResult;
+import org.raml.interfaces.parser.visitor.IRamlDocumentBuilder;
 import org.raml.parser.builder.AbstractRamlTestCase;
-import org.raml.parser.rule.ValidationResult;
 import org.raml.parser.visitor.RamlDocumentBuilder;
 import org.raml.parser.visitor.RamlValidationService;
 import org.raml.parser.visitor.YamlDocumentBuilder;
@@ -40,7 +41,7 @@ import org.raml.parser.visitor.YamlDocumentBuilder;
 public class SalesEnablementTestCase extends AbstractRamlTestCase
 {
 
-    private static Raml raml;
+    private static IRaml raml;
     private static final String ramlSource = "org/raml/integration/sales-enablement-api.yaml";
 
     @BeforeClass
@@ -53,16 +54,16 @@ public class SalesEnablementTestCase extends AbstractRamlTestCase
     public void schemas()
     {
         Map<String, String> schemas = raml.getConsolidatedSchemas();
-        Action post = raml.getResources().get("/presentations").getAction(ActionType.POST);
+        IAction post = raml.getResources().get("/presentations").getAction(ActionType.POST);
         assertTrue(schemas.containsKey(post.getBody().get("application/json").getSchema()));
     }
 
     @Test
     public void presentations()
     {
-        Resource simpleResource = raml.getResources().get("/presentations");
+        IResource simpleResource = raml.getResources().get("/presentations");
         assertThat(simpleResource.getActions().size(), is(2));
-        Map<String, QueryParameter> queryParameters = simpleResource.getAction(GET).getQueryParameters();
+        Map<String, IParameter> queryParameters = simpleResource.getAction(GET).getQueryParameters();
         assertThat(queryParameters.size(), is(3));
         assertThat(queryParameters.get("title").getDisplayName(), is("title"));
         assertThat(queryParameters.get("start").getDisplayName(), is("start"));
@@ -73,12 +74,12 @@ public class SalesEnablementTestCase extends AbstractRamlTestCase
     @Test
     public void emitter() throws Exception
     {
-        RamlDocumentBuilder builder1 = new RamlDocumentBuilder();
-        Raml raml1 = parseRaml(ramlSource, builder1);
+        IRamlDocumentBuilder builder1 = new RamlDocumentBuilder();
+        IRaml raml1 = parseRaml(ramlSource, builder1);
         String emitted1 = YamlDocumentBuilder.dumpFromAst(builder1.getRootNode());
 
         RamlDocumentBuilder builder2 = new RamlDocumentBuilder();
-        Raml raml2 = builder2.build(emitted1, "");
+        IRaml raml2 = builder2.build(emitted1, "");
 
         assertThat(raml2.getResources().get("/presentations").getAction(GET).getQueryParameters().size(),
                    is(raml1.getResources().get("/presentations").getAction(GET).getQueryParameters().size()));
@@ -88,7 +89,7 @@ public class SalesEnablementTestCase extends AbstractRamlTestCase
     public void validation() throws Exception
     {
         String raml = IOUtils.toString(getClass().getClassLoader().getResourceAsStream(ramlSource));
-        List<ValidationResult> errors = RamlValidationService.createDefault().validate(raml, "");
+        List<IValidationResult> errors = RamlValidationService.createDefault().validate(raml, "");
         assertTrue("Errors must be empty: " + errors, errors.isEmpty());
     }
 }

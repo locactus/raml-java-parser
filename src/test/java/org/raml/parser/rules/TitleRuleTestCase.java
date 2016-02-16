@@ -25,6 +25,7 @@ import static org.raml.parser.rule.ValidationMessage.getRuleEmptyMessage;
 import java.util.List;
 
 import org.junit.Test;
+import org.raml.interfaces.parser.rule.IValidationResult;
 import org.raml.parser.builder.AbstractRamlTestCase;
 import org.raml.parser.rule.ValidationResult;
 
@@ -35,7 +36,7 @@ public class TitleRuleTestCase extends AbstractRamlTestCase
     public void testTitleNotEmpty()
     {
         String raml = "#%RAML 0.8\n" + "---\n" + "title:";
-        List<ValidationResult> errors = validateRaml(raml, "");
+        List<IValidationResult> errors = validateRaml(raml, "");
         assertFalse("Errors must not be empty", errors.isEmpty());
         assertThat(errors.get(0).getMessage(), is(getRuleEmptyMessage("title")));
     }
@@ -44,7 +45,7 @@ public class TitleRuleTestCase extends AbstractRamlTestCase
     public void testTitlePresent()
     {
         String raml = "#%RAML 0.8\n" + "---\n" + "version: v28.0\n";
-        List<ValidationResult> errors = validateRaml(raml, "");
+        List<IValidationResult> errors = validateRaml(raml, "");
         assertFalse("Errors must not be empty", errors.isEmpty());
         assertThat(errors.get(0).getMessage(), is(getMissingRuleMessage("title")));
     }
@@ -53,7 +54,7 @@ public class TitleRuleTestCase extends AbstractRamlTestCase
     public void testTitleNotMoreThanOnce()
     {
         String raml = "#%RAML 0.8\n" + "---\n" + "title: bla \n" + "title: bla";
-        List<ValidationResult> errors = validateRaml(raml, "");
+        List<IValidationResult> errors = validateRaml(raml, "");
         assertFalse("Errors must not be empty", errors.isEmpty());
         assertThat(errors.get(0).getMessage(), is(getDuplicateRuleMessage("title")));
     }

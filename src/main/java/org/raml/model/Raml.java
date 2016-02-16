@@ -22,11 +22,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.raml.interfaces.model.IDocumentationItem;
 import org.raml.interfaces.model.IRaml;
 import org.raml.interfaces.model.IResource;
+import org.raml.interfaces.model.ISecurityReference;
 import org.raml.interfaces.model.ISecurityScheme;
 import org.raml.interfaces.model.ITemplate;
-import org.raml.interfaces.model.parameter.IAbstractParam;
+import org.raml.interfaces.model.Protocol;
+import org.raml.interfaces.model.parameter.IParameter;
 import org.raml.model.parameter.UriParameter;
 import org.raml.parser.annotation.Mapping;
 import org.raml.parser.annotation.Scalar;
@@ -54,7 +57,7 @@ public class Raml implements Serializable, IRaml
     private List<Protocol> protocols = new ArrayList<Protocol>();
 
     @Mapping(rule = org.raml.parser.rule.UriParametersRule.class)
-    private Map<String, IAbstractParam> baseUriParameters = new LinkedHashMap<String, IAbstractParam>();
+    private Map<String, IParameter> baseUriParameters = new LinkedHashMap<String, IParameter>();
 
     @Scalar()
     private String mediaType;
@@ -74,29 +77,29 @@ public class Raml implements Serializable, IRaml
     private List<Map<String, ISecurityScheme>> securitySchemes = new ArrayList<Map<String, ISecurityScheme>>();
 
     @Sequence(rule = SecurityReferenceSequenceRule.class)
-    private List<SecurityReference> securedBy = new ArrayList<SecurityReference>();
+    private List<ISecurityReference> securedBy = new ArrayList<ISecurityReference>();
 
     @Mapping(handler = ResourceHandler.class, implicit = true)
     private Map<String, IResource> resources = new LinkedHashMap<String, IResource>();
 
     @Sequence
-    private List<DocumentationItem> documentation;
+    private List<IDocumentationItem> documentation;
 
     public Raml()
     {
     }
 
-    public void setDocumentation(List<DocumentationItem> documentation)
+    public void setDocumentation(List<IDocumentationItem> documentation)
     {
         this.documentation = documentation;
     }
 
-    public List<DocumentationItem> getDocumentation()
+    public List<IDocumentationItem> getDocumentation()
     {
         return documentation;
     }
 
-    public void setBaseUriParameters(Map<String, IAbstractParam> uriParameters)
+    public void setBaseUriParameters(Map<String, IParameter> uriParameters)
     {
         this.baseUriParameters = uriParameters;
     }
@@ -169,7 +172,7 @@ public class Raml implements Serializable, IRaml
         return resources;
     }
 
-    public Map<String, IAbstractParam> getBaseUriParameters()
+    public Map<String, IParameter> getBaseUriParameters()
     {
         return baseUriParameters;
     }
@@ -224,12 +227,12 @@ public class Raml implements Serializable, IRaml
         this.securitySchemes = securitySchemes;
     }
 
-    public List<SecurityReference> getSecuredBy()
+    public List<ISecurityReference> getSecuredBy()
     {
         return securedBy;
     }
 
-    public void setSecuredBy(List<SecurityReference> securedBy)
+    public void setSecuredBy(List<ISecurityReference> securedBy)
     {
         this.securedBy = securedBy;
     }

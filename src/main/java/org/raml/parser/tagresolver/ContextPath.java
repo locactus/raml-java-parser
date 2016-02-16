@@ -18,14 +18,16 @@ package org.raml.parser.tagresolver;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import org.raml.interfaces.parser.tagresolver.IContextPath;
+import org.raml.interfaces.parser.visitor.IIncludeInfo;
 import org.raml.parser.visitor.IncludeInfo;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.Tag;
 
-public class ContextPath
+public class ContextPath implements IContextPath
 {
 
-    private Deque<IncludeInfo> includeStack = new ArrayDeque<IncludeInfo>();
+    private Deque<IIncludeInfo> includeStack = new ArrayDeque<IIncludeInfo>();
 
     public ContextPath()
     {
@@ -33,10 +35,10 @@ public class ContextPath
 
     public ContextPath(ContextPath contextPath)
     {
-        this.includeStack = new ArrayDeque<IncludeInfo>(contextPath.includeStack);
+        this.includeStack = new ArrayDeque<IIncludeInfo>(contextPath.includeStack);
     }
 
-    public ContextPath(IncludeInfo includeInfo)
+    public ContextPath(IIncludeInfo includeInfo)
     {
         includeStack.add(includeInfo);
     }
@@ -47,7 +49,7 @@ public class ContextPath
         {
             throw new IllegalStateException("Non empty stack");
         }
-        includeStack.add(new IncludeInfo(absoluteFile));
+        includeStack.add((IIncludeInfo) new IncludeInfo(absoluteFile));
     }
 
     public static String resolveAbsolutePath(String relativeFile, String parentPath)
@@ -77,17 +79,17 @@ public class ContextPath
         return includeStack.peek().getIncludeName().substring(0, idx);
     }
 
-    public IncludeInfo peek()
+    public IIncludeInfo peek()
     {
         return includeStack.peek();
     }
 
-    public IncludeInfo pop()
+    public IIncludeInfo pop()
     {
         return includeStack.pop();
     }
 
-    public void push(IncludeInfo includeInfo)
+    public void push(IIncludeInfo includeInfo)
     {
         includeStack.push(includeInfo);
     }

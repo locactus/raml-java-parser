@@ -16,18 +16,19 @@
 package org.raml.parser.visitor;
 
 import org.raml.interfaces.parser.tagresolver.TagResolver;
+import org.raml.interfaces.parser.visitor.IRamlDocumentBuilder;
 import org.raml.interfaces.parser.visitor.IRamlDocumentBuilderFactory;
 import org.raml.interfaces.parser.loader.ResourceLoader;
 
 public class RamlDocumentBuilderFactory implements IRamlDocumentBuilderFactory
 {
-    public RamlDocumentBuilder create()
+    public IRamlDocumentBuilder create()
     {
-        return new RamlDocumentBuilder();
+        return (IRamlDocumentBuilder) new RamlDocumentBuilder();
     }
 
-    public RamlDocumentBuilder create(ResourceLoader resourceLoader, TagResolver... tagResolvers)
+    public IRamlDocumentBuilder create(ResourceLoader resourceLoader, TagResolver... tagResolvers)
     {
-        return new RamlDocumentBuilder(resourceLoader, tagResolvers);
+        return (IRamlDocumentBuilder) new RamlDocumentBuilder(resourceLoader, tagResolvers);
     }
 }

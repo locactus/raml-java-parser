@@ -20,6 +20,7 @@ import java.util.List;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
+import org.raml.interfaces.parser.rule.IValidationResult;
 import org.raml.parser.builder.AbstractRamlTestCase;
 import org.raml.parser.rule.ValidationResult;
 
@@ -36,7 +37,7 @@ public class UnknownRuleTestCase extends AbstractRamlTestCase
                       + "baseUri: https://{param2}.force.com/param\n" + "uriParameters:\n"
                       + " param2:\n" + "   name: Community Domain\n" + "   type: string\n"
                       + "   required: 'y'";
-        List<ValidationResult> errors = validateRaml(raml, "");
+        List<IValidationResult> errors = validateRaml(raml, "");
         Assert.assertThat(errors.get(0).getMessage(),
                           CoreMatchers.is("Unknown key: no-Title"));
         Assert.assertThat(errors.get(1).getMessage(),

@@ -20,6 +20,7 @@ import java.util.List;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
+import org.raml.interfaces.parser.rule.IValidationResult;
 import org.raml.parser.builder.AbstractRamlTestCase;
 import org.raml.parser.rule.ValidationResult;
 
@@ -32,7 +33,7 @@ public class RamlSpecValidationTestCase extends AbstractRamlTestCase
         String raml = "#%RAML 0.8\n" + "---\n"
                       + "title: Salesforce Chatter Communities REST API\n" + "version: v28.0\n"
                       + "baseUri: https://{communityDomain}.force.com/{communityPath}";
-        List<ValidationResult> errors = validateRaml(raml, "");
+        List<IValidationResult> errors = validateRaml(raml, "");
         Assert.assertTrue("Errors must be empty", errors.isEmpty());
     }
 
@@ -42,7 +43,7 @@ public class RamlSpecValidationTestCase extends AbstractRamlTestCase
         String raml = "#%RAML 0.8\n" + "---\n"
                       + "title: Salesforce Chatter Communities REST API\n"
                       + "baseUri: https://{communityDomain}.force.com/{version}";
-        List<ValidationResult> errors = validateRaml(raml, "");
+        List<IValidationResult> errors = validateRaml(raml, "");
         Assert.assertFalse("Errors must not be empty", errors.isEmpty());
         Assert.assertThat(errors.get(0).getMessage(),
                           CoreMatchers.is("version parameter must exist in the API definition"));

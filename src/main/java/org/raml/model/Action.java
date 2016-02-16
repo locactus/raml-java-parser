@@ -26,7 +26,8 @@ import org.raml.interfaces.model.IAction;
 import org.raml.interfaces.model.IMimeType;
 import org.raml.interfaces.model.IResponse;
 import org.raml.interfaces.model.ISecurityReference;
-import org.raml.interfaces.model.parameter.IAbstractParam;
+import org.raml.interfaces.model.Protocol;
+import org.raml.interfaces.model.parameter.IParameter;
 import org.raml.parser.annotation.Key;
 import org.raml.parser.annotation.Mapping;
 import org.raml.parser.annotation.Parent;
@@ -51,10 +52,10 @@ public class Action implements Serializable, IAction
     private String displayName;
 
     @Mapping
-    private Map<String, IAbstractParam> headers = new LinkedHashMap<String, IAbstractParam>();
+    private Map<String, IParameter> headers = new LinkedHashMap<String, IParameter>();
 
     @Mapping
-    private Map<String, IAbstractParam> queryParameters = new LinkedHashMap<String, IAbstractParam>();
+    private Map<String, IParameter> queryParameters = new LinkedHashMap<String, IParameter>();
 
     @Mapping(innerHandler = MimeTypeHandler.class)
     private Map<String, IMimeType> body;
@@ -75,7 +76,7 @@ public class Action implements Serializable, IAction
     private List<ISecurityReference> securedBy = new ArrayList<ISecurityReference>();
 
     @Mapping(rule = org.raml.parser.rule.UriParametersRule.class)
-    private Map<String, List<IAbstractParam>> baseUriParameters = new LinkedHashMap<String, List<IAbstractParam>>();
+    private Map<String, List<IParameter>> baseUriParameters = new LinkedHashMap<String, List<IParameter>>();
 
     public Action()
     {
@@ -101,22 +102,22 @@ public class Action implements Serializable, IAction
         this.description = description;
     }
 
-    public Map<String, IAbstractParam> getHeaders()
+    public Map<String, IParameter> getHeaders()
     {
         return headers;
     }
 
-    public void setHeaders(Map<String, IAbstractParam> headers)
+    public void setHeaders(Map<String, IParameter> headers)
     {
         this.headers = headers;
     }
 
-    public Map<String, IAbstractParam> getQueryParameters()
+    public Map<String, IParameter> getQueryParameters()
     {
         return queryParameters;
     }
 
-    public void setQueryParameters(Map<String, IAbstractParam> queryParameters)
+    public void setQueryParameters(Map<String, IParameter> queryParameters)
     {
         this.queryParameters = queryParameters;
     }
@@ -186,12 +187,12 @@ public class Action implements Serializable, IAction
         this.securedBy = securedBy;
     }
 
-    public Map<String, List<IAbstractParam>> getBaseUriParameters()
+    public Map<String, List<IParameter>> getBaseUriParameters()
     {
         return baseUriParameters;
     }
 
-    public void setBaseUriParameters(Map<String, List<IAbstractParam>> baseUriParameters)
+    public void setBaseUriParameters(Map<String, List<IParameter>> baseUriParameters)
     {
         this.baseUriParameters = baseUriParameters;
     }

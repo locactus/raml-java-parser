@@ -21,7 +21,7 @@ import java.util.Map;
 
 import org.raml.interfaces.model.IMimeType;
 import org.raml.interfaces.model.IResponse;
-import org.raml.interfaces.model.parameter.IAbstractParam;
+import org.raml.interfaces.model.parameter.IParameter;
 import org.raml.model.parameter.Header;
 import org.raml.parser.annotation.Mapping;
 import org.raml.parser.annotation.Scalar;
@@ -39,14 +39,14 @@ public class Response implements Serializable, IResponse
     private Map<String, IMimeType> body;
 
     @Mapping
-    private Map<String, IAbstractParam> headers = new LinkedHashMap<String, IAbstractParam>();
+    private Map<String, IParameter> headers = new LinkedHashMap<String, IParameter>();
 
-    public Map<String, IAbstractParam> getHeaders()
+    public Map<String, IParameter> getHeaders()
     {
         return headers;
     }
 
-    public void setHeaders(Map<String, IAbstractParam> headers)
+    public void setHeaders(Map<String, IParameter> headers)
     {
         this.headers = headers;
     }

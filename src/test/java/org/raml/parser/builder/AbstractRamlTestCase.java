@@ -22,6 +22,9 @@ import java.io.InputStream;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.raml.interfaces.model.IRaml;
+import org.raml.interfaces.parser.rule.IValidationResult;
+import org.raml.interfaces.parser.visitor.IRamlDocumentBuilder;
 import org.raml.model.Raml;
 import org.raml.parser.rule.ValidationResult;
 import org.raml.parser.visitor.RamlDocumentBuilder;
@@ -34,38 +37,38 @@ public class AbstractRamlTestCase
 
     protected static final Logger logger = LoggerFactory.getLogger(AbstractRamlTestCase.class);
 
-    protected static Raml parseRaml(String resourceLocation)
+    protected static IRaml parseRaml(String resourceLocation)
     {
-        return new RamlDocumentBuilder().build(getInputStream(resourceLocation), resourceLocation);
+        return new IRamlDocumentBuilder().build(getInputStream(resourceLocation), resourceLocation);
     }
 
-    protected static Raml parseRaml(String raml, String resourceLocation)
+    protected static IRaml parseRaml(String raml, String resourceLocation)
     {
         return new RamlDocumentBuilder().build(raml, resourceLocation);
     }
 
-    protected static Raml parseRaml(String resourceLocation, RamlDocumentBuilder builder)
+    protected static IRaml parseRaml(String resourceLocation, IRamlDocumentBuilder builder)
     {
         return builder.build(getInputStream(resourceLocation), resourceLocation);
     }
 
-    protected static List<ValidationResult> validateRaml(String resourceLocation)
+    protected static List<IValidationResult> validateRaml(String resourceLocation)
     {
         return RamlValidationService.createDefault().validate(resourceLocation);
     }
 
-    protected static List<ValidationResult> validateRaml(String raml, String resourceLocation)
+    protected static List<IValidationResult> validateRaml(String raml, String resourceLocation)
     {
         return RamlValidationService.createDefault().validate(raml, resourceLocation);
     }
 
     protected static void validateRamlNoErrors(String resourceLocation)
     {
-        List<ValidationResult> validationResults = validateRaml(resourceLocation);
+        List<IValidationResult> validationResults = validateRaml(resourceLocation);
         if (!validationResults.isEmpty())
         {
             StringBuilder msg = new StringBuilder("Unexpected errors:\n ");
-            for (ValidationResult vr : validationResults)
+            for (IValidationResult vr : validationResults)
             {
                 msg.append("\t\t").append(vr.toString()).append("\n");
             }

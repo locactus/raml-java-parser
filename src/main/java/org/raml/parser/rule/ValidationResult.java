@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.raml.interfaces.parser.rule.IValidationResult;
+import org.raml.interfaces.parser.tagresolver.IContextPath;
 import org.raml.parser.tagresolver.ContextPath;
 import org.raml.parser.visitor.IncludeInfo;
 import org.yaml.snakeyaml.error.Mark;
@@ -34,7 +35,7 @@ public class ValidationResult implements IValidationResult
     private int line;
     private int startColumn;
     private int endColumn;
-    private ContextPath contextPath;
+    private IContextPath contextPath;
     private IncludeInfo extraIncludeInfo;
 
     private ValidationResult(Level level, String message, int line, int startColumn, int endColumn)
@@ -85,7 +86,7 @@ public class ValidationResult implements IValidationResult
         return null;
     }
 
-    public ContextPath getIncludeContext()
+    public IContextPath getIncludeContext()
     {
         return contextPath;
     }

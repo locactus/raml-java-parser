@@ -20,13 +20,14 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.raml.interfaces.model.IRaml;
 import org.raml.model.Raml;
 
 public class TemplateParamFunctionsTestCase extends AbstractRamlTestCase
 {
 
     private static final String ramlSource = "org/raml/types/template-param-functions.yaml";
-    private static Raml raml;
+    private static IRaml raml;
 
     @BeforeClass
     public static void init()

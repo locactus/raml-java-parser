@@ -19,6 +19,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
+import org.raml.interfaces.model.IRaml;
 import org.raml.model.Raml;
 
 public class IncludeAbsoluteTestCase extends AbstractRamlTestCase
@@ -28,7 +29,7 @@ public class IncludeAbsoluteTestCase extends AbstractRamlTestCase
     public void absoluteClasspath()
     {
         String location = "org/raml/include/include-main-absolute-classpath.yaml";
-        Raml raml = parseRaml(location);
+        IRaml raml = parseRaml(location);
         assertThat(raml.getResource("/main/absolute").getDescription(), is("absolute"));
         assertThat(raml.getResource("/main/absolute/relative").getDescription(), is("relative"));
     }

@@ -18,12 +18,13 @@ package org.raml.parser.visitor;
 import static org.raml.parser.tagresolver.ContextPath.resolveAbsolutePath;
 import static org.raml.parser.tagresolver.IncludeResolver.SEPARATOR;
 
+import org.raml.interfaces.parser.visitor.IIncludeInfo;
 import org.raml.parser.tagresolver.IncludeResolver;
 import org.yaml.snakeyaml.error.Mark;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.Tag;
 
-public class IncludeInfo
+public class IncludeInfo implements IIncludeInfo
 {
 
     private final int line;

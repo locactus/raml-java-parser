@@ -17,12 +17,12 @@ package org.raml.parser.builder;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.raml.model.ActionType.GET;
-import static org.raml.model.ParamType.BOOLEAN;
-import static org.raml.model.ParamType.DATE;
-import static org.raml.model.ParamType.INTEGER;
-import static org.raml.model.ParamType.NUMBER;
-import static org.raml.model.ParamType.STRING;
+import static org.raml.interfaces.model.ActionType.GET;
+import static org.raml.interfaces.model.ParamType.BOOLEAN;
+import static org.raml.interfaces.model.ParamType.DATE;
+import static org.raml.interfaces.model.ParamType.INTEGER;
+import static org.raml.interfaces.model.ParamType.NUMBER;
+import static org.raml.interfaces.model.ParamType.STRING;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -30,15 +30,15 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.raml.model.Raml;
-import org.raml.model.parameter.QueryParameter;
-import org.raml.parser.rule.ValidationResult;
+import org.raml.interfaces.model.IRaml;
+import org.raml.interfaces.model.parameter.IParameter;
+import org.raml.interfaces.parser.rule.IValidationResult;
 
 public class ParameterTypesTestCase extends AbstractRamlTestCase
 {
 
     private static final String ramlSource = "org/raml/params/param-types.yaml";
-    private static Raml raml;
+    private static IRaml raml;
 
     @BeforeClass
     public static void init()
@@ -49,7 +49,7 @@ public class ParameterTypesTestCase extends AbstractRamlTestCase
     @Test
     public void stringType()
     {
-        QueryParameter nameParam = getParameter("name");
+        IParameter nameParam = getParameter("name");
         assertThat(nameParam.getDisplayName(), is("name name"));
         assertThat(nameParam.getDescription(), is("name description"));
         assertThat(nameParam.getType(), is(STRING));
@@ -74,7 +74,7 @@ public class ParameterTypesTestCase extends AbstractRamlTestCase
     @Test
     public void integerType()
     {
-        QueryParameter ageParam = getParameter("age");
+        IParameter ageParam = getParameter("age");
         assertThat(ageParam.getDisplayName(), is("age name"));
         assertThat(ageParam.getDescription(), is("age description"));
         assertThat(ageParam.getType(), is(INTEGER));
@@ -94,7 +94,7 @@ public class ParameterTypesTestCase extends AbstractRamlTestCase
     @Test
     public void numberType()
     {
-        QueryParameter priceParam = getParameter("price");
+        IParameter priceParam = getParameter("price");
         assertThat(priceParam.getDisplayName(), is("price name"));
         assertThat(priceParam.getDescription(), is("price description"));
         assertThat(priceParam.getType(), is(NUMBER));
@@ -114,7 +114,7 @@ public class ParameterTypesTestCase extends AbstractRamlTestCase
     @Test
     public void dateType()
     {
-        QueryParameter priceParam = getParameter("time");
+        IParameter priceParam = getParameter("time");
         assertThat(priceParam.getDisplayName(), is("time name"));
         assertThat(priceParam.getDescription(), is("time description"));
         assertThat(priceParam.getType(), is(DATE));
@@ -130,7 +130,7 @@ public class ParameterTypesTestCase extends AbstractRamlTestCase
     @Test
     public void booleanType()
     {
-        QueryParameter priceParam = getParameter("alive");
+        IParameter priceParam = getParameter("alive");
         assertThat(priceParam.getDisplayName(), is("alive name"));
         assertThat(priceParam.getDescription(), is("alive description"));
         assertThat(priceParam.getType(), is(BOOLEAN));
@@ -148,7 +148,7 @@ public class ParameterTypesTestCase extends AbstractRamlTestCase
     @Test
     public void defaultEnum()
     {
-        QueryParameter defaultEnum = getParameter("default-enum");
+        IParameter defaultEnum = getParameter("default-enum");
         assertThat(defaultEnum.validate("one"), is(true));
         assertThat(defaultEnum.validate("two"), is(true));
         assertThat(defaultEnum.validate("three"), is(false));
@@ -157,11 +157,11 @@ public class ParameterTypesTestCase extends AbstractRamlTestCase
     @Test
     public void validate()
     {
-        List<ValidationResult> errors = validateRaml(ramlSource);
+        List<IValidationResult> errors = validateRaml(ramlSource);
         Assert.assertTrue("Errors must be empty", errors.isEmpty());
     }
 
-    private QueryParameter getParameter(String param)
+    private IParameter getParameter(String param)
     {
         return raml.getResources().get("/simple").getAction(GET).getQueryParameters().get(param);
     }

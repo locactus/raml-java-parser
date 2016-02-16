@@ -17,17 +17,18 @@ package org.raml.parser.builder;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.raml.model.ActionType.GET;
+import static org.raml.interfaces.model.ActionType.GET;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.raml.interfaces.model.IRaml;
 import org.raml.model.Raml;
 
 public class TemplateDefaultParamsTestCase extends AbstractRamlTestCase
 {
 
     private static final String ramlSource = "org/raml/types/template-default-params.yaml";
-    private static Raml raml;
+    private static IRaml raml;
 
     @BeforeClass
     public static void init()

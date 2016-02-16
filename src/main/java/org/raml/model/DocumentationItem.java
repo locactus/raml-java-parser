@@ -17,9 +17,10 @@ package org.raml.model;
 
 import java.io.Serializable;
 
+import org.raml.interfaces.model.IDocumentationItem;
 import org.raml.parser.annotation.Scalar;
 
-public class DocumentationItem implements Serializable
+public class DocumentationItem implements Serializable, IDocumentationItem
 {
 
     private static final long serialVersionUID = 8041314633068025129L;

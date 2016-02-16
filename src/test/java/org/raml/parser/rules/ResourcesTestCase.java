@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.raml.interfaces.parser.rule.IValidationResult;
 import org.raml.parser.builder.AbstractRamlTestCase;
 import org.raml.parser.rule.ValidationResult;
 
@@ -30,7 +31,7 @@ public class ResourcesTestCase extends AbstractRamlTestCase
     public void resourceURIOk() throws IOException
     {
         String location = "org/raml/rules/resource-with-uri.yaml";
-        List<ValidationResult> errors = validateRaml(location);
+        List<IValidationResult> errors = validateRaml(location);
         Assert.assertTrue("Errors must be empty but is : " + errors.size() + " -> " + errors, errors.isEmpty());
     }
 
@@ -38,7 +39,7 @@ public class ResourcesTestCase extends AbstractRamlTestCase
     public void resourceDescriptionOk() throws IOException
     {
         String location = "org/raml/rules/resource-with-description-ok.yaml";
-        List<ValidationResult> errors = validateRaml(location);
+        List<IValidationResult> errors = validateRaml(location);
         Assert.assertTrue("Errors must be empty but is : " + errors.size() + " -> " + errors, errors.isEmpty());
     }
 
@@ -46,7 +47,7 @@ public class ResourcesTestCase extends AbstractRamlTestCase
     public void resourceFullOk() throws IOException
     {
         String location = "org/raml/rules/resource-full-ok.yaml";
-        List<ValidationResult> errors = validateRaml(location);
+        List<IValidationResult> errors = validateRaml(location);
         Assert.assertTrue("Errors must be empty but is : " + errors.size() + " -> " + errors, errors.isEmpty());
     }
 

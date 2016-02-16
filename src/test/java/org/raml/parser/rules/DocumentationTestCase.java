@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.Test;
+import org.raml.interfaces.parser.rule.IValidationResult;
 import org.raml.parser.builder.AbstractRamlTestCase;
 import org.raml.parser.rule.ValidationResult;
 
@@ -33,7 +34,7 @@ public class DocumentationTestCase extends AbstractRamlTestCase
     public void documentation() throws Exception
     {
         String location = "org/raml/parser/rules/documentation.yaml";
-        List<ValidationResult> errors = validateRaml(location);
+        List<IValidationResult> errors = validateRaml(location);
         assertTrue("Errors must be empty: " + errors, errors.isEmpty());
     }
 
@@ -41,7 +42,7 @@ public class DocumentationTestCase extends AbstractRamlTestCase
     public void missingContent() throws Exception
     {
         String location = "org/raml/parser/rules/documentation-nocontent.yaml";
-        List<ValidationResult> errors = validateRaml(location);
+        List<IValidationResult> errors = validateRaml(location);
         assertThat(1, is(errors.size()));
         assertThat(errors.get(0).getMessage(), containsString("content is missing"));
     }
@@ -50,7 +51,7 @@ public class DocumentationTestCase extends AbstractRamlTestCase
     public void missingTitle() throws Exception
     {
         String location = "org/raml/parser/rules/documentation-notitle.yaml";
-        List<ValidationResult> errors = validateRaml(location);
+        List<IValidationResult> errors = validateRaml(location);
         assertThat(1, is(errors.size()));
         assertThat(errors.get(0).getMessage(), containsString("title is missing"));
     }

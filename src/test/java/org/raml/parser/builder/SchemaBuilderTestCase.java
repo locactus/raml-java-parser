@@ -18,11 +18,13 @@ package org.raml.parser.builder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
-import static org.raml.model.ActionType.GET;
+import static org.raml.interfaces.model.ActionType.GET;
 
 import javax.xml.validation.Schema;
 
 import org.junit.Test;
+import org.raml.interfaces.model.IMimeType;
+import org.raml.interfaces.model.IRaml;
 import org.raml.model.MimeType;
 import org.raml.model.Raml;
 
@@ -32,8 +34,8 @@ public class SchemaBuilderTestCase extends AbstractRamlTestCase
     @Test
     public void xsdWithInclude()
     {
-        Raml raml = parseRaml("org/raml/schema/xsd-includer.raml");
-        MimeType mimeType = raml.getResources().get("/name").getAction(GET).getResponses().get("200").getBody().get("application/xml");
+        IRaml raml = parseRaml("org/raml/schema/xsd-includer.raml");
+        IMimeType mimeType = raml.getResources().get("/name").getAction(GET).getResponses().get("200").getBody().get("application/xml");
         assertThat(mimeType.getCompiledSchema(), is(Schema.class));
         assertThat(mimeType.getSchema(), is(String.class));
         assertThat(mimeType.getSchema(), containsString("include schemaLocation=\"xsd-include.xsd\""));
@@ -42,8 +44,8 @@ public class SchemaBuilderTestCase extends AbstractRamlTestCase
     @Test
     public void globalXsdWithInclude()
     {
-        Raml raml = parseRaml("org/raml/schema/xsd-global-includer.raml");
-        MimeType mimeType = raml.getResources().get("/name").getAction(GET).getResponses().get("200").getBody().get("application/xml");
+        IRaml raml = parseRaml("org/raml/schema/xsd-global-includer.raml");
+        IMimeType mimeType = raml.getResources().get("/name").getAction(GET).getResponses().get("200").getBody().get("application/xml");
         assertThat(raml.getCompiledSchemas().size(), is(1));
         assertThat(raml.getCompiledSchemas().get(mimeType.getSchema()), is(Schema.class));
         assertThat(mimeType.getSchema(), is(String.class));
@@ -54,8 +56,8 @@ public class SchemaBuilderTestCase extends AbstractRamlTestCase
     @Test
     public void jsonSchemaWithRef()
     {
-        Raml raml = parseRaml("org/raml/schema/json-schema-ref.raml");
-        MimeType mimeType = raml.getResources().get("/name").getAction(GET).getResponses().get("200").getBody().get("application/json");
+        IRaml raml = parseRaml("org/raml/schema/json-schema-ref.raml");
+        IMimeType mimeType = raml.getResources().get("/name").getAction(GET).getResponses().get("200").getBody().get("application/json");
         assertThat(mimeType.getCompiledSchema(), is(String.class));
         assertThat(mimeType.getSchema(), is(String.class));
         assertThat(mimeType.getSchema(), containsString("draft-04"));
@@ -64,8 +66,8 @@ public class SchemaBuilderTestCase extends AbstractRamlTestCase
     @Test
     public void globalJsonSchemaWithRef()
     {
-        Raml raml = parseRaml("org/raml/schema/json-schema-global-ref.raml");
-        MimeType mimeType = raml.getResources().get("/name").getAction(GET).getResponses().get("200").getBody().get("application/json");
+        IRaml raml = parseRaml("org/raml/schema/json-schema-global-ref.raml");
+        IMimeType mimeType = raml.getResources().get("/name").getAction(GET).getResponses().get("200").getBody().get("application/json");
         assertThat(raml.getCompiledSchemas().size(), is(1));
         Object globalCompiledSchema = raml.getCompiledSchemas().get(mimeType.getSchema());
         assertThat(globalCompiledSchema, is(String.class));

@@ -19,22 +19,30 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
-import static org.raml.model.ParamType.INTEGER;
-import static org.raml.model.ParamType.NUMBER;
-import static org.raml.model.ParamType.STRING;
-import static org.raml.model.Protocol.HTTP;
-import static org.raml.model.Protocol.HTTPS;
+import static org.raml.interfaces.model.ParamType.INTEGER;
+import static org.raml.interfaces.model.ParamType.NUMBER;
+import static org.raml.interfaces.model.ParamType.STRING;
+import static org.raml.interfaces.model.Protocol.HTTP;
+import static org.raml.interfaces.model.Protocol.HTTPS;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
+import org.raml.interfaces.model.IAction;
+import org.raml.interfaces.model.IDocumentationItem;
+import org.raml.interfaces.model.IMimeType;
+import org.raml.interfaces.model.IRaml;
+import org.raml.interfaces.model.IResource;
+import org.raml.interfaces.model.IResponse;
+import org.raml.interfaces.model.parameter.IParameter;
+import org.raml.interfaces.parser.rule.IValidationResult;
 import org.raml.model.Action;
 import org.raml.interfaces.model.ActionType;
 import org.raml.model.DocumentationItem;
 import org.raml.model.MimeType;
-import org.raml.model.ParamType;
+import org.raml.interfaces.model.ParamType;
 import org.raml.model.Raml;
 import org.raml.model.Resource;
 import org.raml.model.Response;
@@ -42,7 +50,6 @@ import org.raml.model.parameter.FormParameter;
 import org.raml.model.parameter.Header;
 import org.raml.model.parameter.QueryParameter;
 import org.raml.model.parameter.UriParameter;
-import org.raml.parser.rule.ValidationResult;
 
 public class FullConfigTestCase extends AbstractRamlTestCase
 {
@@ -52,17 +59,17 @@ public class FullConfigTestCase extends AbstractRamlTestCase
     @Test
     public void validate()
     {
-        List<ValidationResult> validationResults = validateRaml(ramlSource);
+        List<IValidationResult> validationResults = validateRaml(ramlSource);
         assertThat(validationResults.size(), is(0));
     }
 
     @Test
     public void fullConfig()
     {
-        Raml raml = parseRaml(ramlSource);
+        IRaml raml = parseRaml(ramlSource);
 
         //documentation
-        List<DocumentationItem> documentation = raml.getDocumentation();
+        List<IDocumentationItem> documentation = raml.getDocumentation();
         assertThat(documentation.size(), is(2));
         assertThat(documentation.get(0).getTitle(), is("Home"));
         assertThat(documentation.get(0).getContent(), startsWith("Lorem ipsum dolor sit"));
@@ -83,13 +90,13 @@ public class FullConfigTestCase extends AbstractRamlTestCase
 
         //uri parameters
         assertThat(raml.getBaseUriParameters().size(), is(3));
-        Map<String, UriParameter> tagUriParameters = raml.getResource("/tags/{tagId}").getUriParameters();
+        Map<String, IParameter> tagUriParameters = raml.getResource("/tags/{tagId}").getUriParameters();
         assertThat(tagUriParameters.size(), is(1));
         assertThat(tagUriParameters.get("tagId").getDisplayName(), is("tagId"));
         assertThat(tagUriParameters.get("tagId").isRequired(), is(true));
         assertThat(tagUriParameters.get("tagId").getType(), is(ParamType.STRING));
 
-        UriParameter hostParam = raml.getBaseUriParameters().get("host");
+        IParameter hostParam = raml.getBaseUriParameters().get("host");
         assertThat(hostParam.getDisplayName(), is("Host"));
         assertThat(hostParam.getDescription(), is("host name"));
         assertThat(hostParam.getType(), is(STRING));
@@ -97,13 +104,13 @@ public class FullConfigTestCase extends AbstractRamlTestCase
         assertThat(hostParam.getMaxLength(), is(10));
         assertThat(hostParam.getPattern(), is("[a-z]*"));
 
-        UriParameter portParam = raml.getBaseUriParameters().get("port");
+        IParameter portParam = raml.getBaseUriParameters().get("port");
         assertThat(portParam.getType(), is(INTEGER));
         assertThat(portParam.getMinimum(), is(new BigDecimal(1025)));
         assertThat(portParam.getMaximum(), is(new BigDecimal(65535)));
 
         assertThat(hostParam.getType(), is(STRING));
-        UriParameter pathParam = raml.getBaseUriParameters().get("path");
+        IParameter pathParam = raml.getBaseUriParameters().get("path");
         assertThat(pathParam.getType(), is(STRING));
         assertThat(pathParam.getEnumeration().size(), is(3));
         assertThat(pathParam.getEnumeration().get(0), is("one"));
@@ -114,7 +121,7 @@ public class FullConfigTestCase extends AbstractRamlTestCase
         assertThat(raml.getResources().size(), is(3));
 
         String rootUri = "/";
-        Resource rootResource = raml.getResources().get(rootUri);
+        IResource rootResource = raml.getResources().get(rootUri);
         assertThat(rootResource.getRelativeUri(), is(rootUri));
         assertThat(rootResource.getUri(), is(rootUri));
         assertThat(rootResource.getDisplayName(), is("Root resource"));
@@ -123,21 +130,21 @@ public class FullConfigTestCase extends AbstractRamlTestCase
         assertThat(rootResource.getAction(ActionType.HEAD).getProtocols().get(0), is(HTTP));
 
         String mediaUri = "/media";
-        Resource mediaResource = raml.getResources().get(mediaUri);
+        IResource mediaResource = raml.getResources().get(mediaUri);
         assertThat(mediaResource.getRelativeUri(), is(mediaUri));
         assertThat(mediaResource.getUri(), is(mediaUri));
         assertThat(mediaResource.getDisplayName(), is("Media collection"));
 
         //actions
         assertThat(mediaResource.getActions().size(), is(2));
-        Action action = mediaResource.getAction(ActionType.GET);
+        IAction action = mediaResource.getAction(ActionType.GET);
         assertThat(action.getType(), is(ActionType.GET));
         assertThat(action.getDescription(), is("retrieve media"));
         assertThat(action.getDisplayName(), is("RetrieveMediaDisplayName"));
 
         //action headers
         assertThat(action.getHeaders().size(), is(1));
-        Header apiKeyHeader = action.getHeaders().get("api-key");
+        IParameter apiKeyHeader = action.getHeaders().get("api-key");
         assertThat(apiKeyHeader.getDisplayName(), is("Api key"));
         assertThat(apiKeyHeader.getDescription(), is("Api key description"));
         assertThat(apiKeyHeader.getType(), is(STRING));
@@ -148,7 +155,7 @@ public class FullConfigTestCase extends AbstractRamlTestCase
 
         //action query parameters
         assertThat(action.getQueryParameters().size(), is(1));
-        QueryParameter pageQueryParam = action.getQueryParameters().get("page");
+        IParameter pageQueryParam = action.getQueryParameters().get("page");
         assertThat(pageQueryParam.getType(), is(INTEGER));
         assertThat(pageQueryParam.isRequired(), is(false));
         assertThat(pageQueryParam.getDefaultValue(), is("1"));
@@ -157,16 +164,16 @@ public class FullConfigTestCase extends AbstractRamlTestCase
         //action body types
         assertThat(action.getBody().size(), is(3));
         String jsonMime = "application/json";
-        MimeType jsonBody = action.getBody().get(jsonMime);
+        IMimeType jsonBody = action.getBody().get(jsonMime);
         assertThat(jsonBody.getType(), is(jsonMime));
         assertThat(jsonBody.getSchema(), containsString("\"input\": {"));
         assertThat(jsonBody.getExample(), is("{ \"input\": \"hola\" }"));
 
         String formMime = "multipart/form-data";
-        MimeType formBody = action.getBody().get(formMime);
+        IMimeType formBody = action.getBody().get(formMime);
         assertThat(formBody.getType(), is(formMime));
         assertThat(formBody.getFormParameters().size(), is(2));
-        List<FormParameter> form1Param = formBody.getFormParameters().get("form-1");
+        List<IParameter> form1Param = formBody.getFormParameters().get("form-1");
         assertThat(form1Param.get(0).getDisplayName(), is("form 1"));
         assertThat(form1Param.get(0).getDescription(), is("form 1 description"));
         assertThat(form1Param.get(0).getType(), is(NUMBER));
@@ -178,27 +185,27 @@ public class FullConfigTestCase extends AbstractRamlTestCase
 
         //action responses
         assertThat(action.getResponses().size(), is(3));
-        Response response200 = action.getResponses().get("200");
+        IResponse response200 = action.getResponses().get("200");
         assertThat(response200.getBody().size(), is(1));
         assertThat(response200.getBody().get("application/json").getExample(), is("{ \"key\": \"value\" }"));
         assertThat(response200.getHeaders().size(), is(2));
-        Response response400 = action.getResponses().get("400");
+        IResponse response400 = action.getResponses().get("400");
         assertThat(response400.getBody().size(), is(2));
         assertThat(response400.getBody().get("text/xml").getExample(), is("<root>none</root>"));
         assertThat(response400.getBody().get("text/plain").getType(), is("text/plain"));
-        Response response404 = action.getResponses().get("404");
+        IResponse response404 = action.getResponses().get("404");
         assertThat(response404.getDescription(), is("not found"));
 
         //nested resource
         assertThat(mediaResource.getResources().size(), is(1));
         String mediaItemUri = "/{mediaId}";
-        Resource mediaItemResource = mediaResource.getResource(mediaItemUri);
+        IResource mediaItemResource = mediaResource.getResource(mediaItemUri);
         assertThat(mediaItemResource.getRelativeUri(), is(mediaItemUri));
         assertThat(mediaItemResource.getUri(), is(mediaUri + mediaItemUri));
         assertThat(mediaItemResource.getDisplayName(), is("Media item"));
         assertThat(mediaItemResource.getActions().size(), is(1));
         assertThat(mediaItemResource.getUriParameters().size(), is(1));
-        UriParameter mediaIdParam = mediaItemResource.getUriParameters().get("mediaId");
+        IParameter mediaIdParam = mediaItemResource.getUriParameters().get("mediaId");
         assertThat(mediaIdParam.getType(), is(STRING));
         assertThat(mediaIdParam.getMaxLength(), is(10));
 

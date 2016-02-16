@@ -23,6 +23,9 @@ import static org.junit.Assert.assertThat;
 import java.util.List;
 
 import org.junit.Test;
+import org.raml.interfaces.parser.rule.IValidationResult;
+import org.raml.interfaces.parser.tagresolver.IContextPath;
+import org.raml.interfaces.parser.visitor.IIncludeInfo;
 import org.raml.parser.builder.AbstractRamlTestCase;
 import org.raml.parser.rule.ValidationResult;
 import org.raml.parser.tagresolver.ContextPath;
@@ -34,14 +37,14 @@ public class IncludeRulesTestCase extends AbstractRamlTestCase
     @Test
     public void include()
     {
-        List<ValidationResult> validationResults = validateRaml("org/raml/parser/rules/includes.yaml");
+        List<IValidationResult> validationResults = validateRaml("org/raml/parser/rules/includes.yaml");
         assertThat(validationResults.size(), is(0));
     }
 
     @Test
     public void includeNotFound()
     {
-        List<ValidationResult> errors = validateRaml("org/raml/parser/rules/includes-bad.yaml");
+        List<IValidationResult> errors = validateRaml("org/raml/parser/rules/includes-bad.yaml");
         assertThat("Errors are not 1 " + errors, errors.size(), is(1));
         assertThat(errors.get(0).getMessage(), is("Include cannot be resolved org/raml/parser/rules/title2.txt"));
     }
@@ -52,7 +55,7 @@ public class IncludeRulesTestCase extends AbstractRamlTestCase
         String includedResource1 = "org/raml/parser/rules/included-with-error.yaml";
         String includedResource2 = "org/raml/parser/rules/included-with-error-2.yaml";
 
-        List<ValidationResult> errors = validateRaml("org/raml/parser/rules/includes-yaml-with-error.yaml");
+        List<IValidationResult> errors = validateRaml("org/raml/parser/rules/includes-yaml-with-error.yaml");
         assertThat(errors.size(), is(3));
 
         assertThat(errors.get(0).getMessage(), containsString("Unknown key: invalidKeyRoot"));
@@ -66,9 +69,9 @@ public class IncludeRulesTestCase extends AbstractRamlTestCase
         assertThat(errors.get(1).getLine() + 1, is(2));
         assertThat(errors.get(1).getStartColumn() + 1, is(1));
         assertThat(errors.get(1).getEndColumn() + 1, is(12));
-        ContextPath contextPath = errors.get(1).getIncludeContext();
+        IContextPath contextPath = errors.get(1).getIncludeContext();
         assertThat(contextPath.size(), is(2));
-        IncludeInfo includeInfo = contextPath.pop();
+        IIncludeInfo includeInfo = contextPath.pop();
         assertThat(includeInfo.getLine() + 1, is(7));
         assertThat(includeInfo.getStartColumn() + 1, is(14));
         assertThat(includeInfo.getEndColumn() + 1, is(47));
@@ -98,7 +101,7 @@ public class IncludeRulesTestCase extends AbstractRamlTestCase
     @Test
     public void includeEmptyYamlFile()
     {
-        List<ValidationResult> errors = validateRaml("org/raml/parser/rules/includes-empty.yaml");
+        List<IValidationResult> errors = validateRaml("org/raml/parser/rules/includes-empty.yaml");
         assertThat("Errors are not 1 " + errors, errors.size(), is(2));
         assertThat(errors.get(0).getMessage(), is("Include file is empty org/raml/parser/rules/empty.yaml"));
         assertThat(errors.get(1).getMessage(), is("Invalid value type"));
@@ -107,7 +110,7 @@ public class IncludeRulesTestCase extends AbstractRamlTestCase
     @Test
     public void includeRelativeParent()
     {
-        List<ValidationResult> errors = validateRaml("org/raml/parser/rules/includesRelative.yaml");
+        List<IValidationResult> errors = validateRaml("org/raml/parser/rules/includesRelative.yaml");
         assertThat(errors.size(), is(0));
     }
 

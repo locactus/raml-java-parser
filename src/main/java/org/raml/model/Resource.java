@@ -26,7 +26,7 @@ import org.raml.interfaces.model.ActionType;
 import org.raml.interfaces.model.IAction;
 import org.raml.interfaces.model.IResource;
 import org.raml.interfaces.model.ISecurityReference;
-import org.raml.interfaces.model.parameter.IAbstractParam;
+import org.raml.interfaces.model.parameter.IParameter;
 import org.raml.parser.annotation.Key;
 import org.raml.parser.annotation.Mapping;
 import org.raml.parser.annotation.Parent;
@@ -56,7 +56,7 @@ public class Resource implements Serializable, IResource
     private String relativeUri;
 
     @Mapping
-    private Map<String, IAbstractParam> uriParameters = new LinkedHashMap<String, IAbstractParam>();
+    private Map<String, IParameter> uriParameters = new LinkedHashMap<String, IParameter>();
 
     @Scalar
     private String type;
@@ -68,7 +68,7 @@ public class Resource implements Serializable, IResource
     private List<ISecurityReference> securedBy = new ArrayList<ISecurityReference>();
 
     @Mapping(rule = org.raml.parser.rule.UriParametersRule.class)
-    private Map<String, List<IAbstractParam>> baseUriParameters = new LinkedHashMap<String, List<IAbstractParam>>();
+    private Map<String, List<IParameter>> baseUriParameters = new LinkedHashMap<String, List<IParameter>>();
 
     @Mapping(implicit = true)
     private Map<org.raml.interfaces.model.ActionType, IAction> actions = new LinkedHashMap<org.raml.interfaces.model.ActionType, IAction>();
@@ -95,7 +95,7 @@ public class Resource implements Serializable, IResource
         this.parentUri = parentUri;
     }
 
-    public void setUriParameters(Map<String, IAbstractParam> uriParameters)
+    public void setUriParameters(Map<String, IParameter> uriParameters)
     {
         this.uriParameters = uriParameters;
     }
@@ -105,7 +105,7 @@ public class Resource implements Serializable, IResource
         return actions;
     }
 
-    public void setActions(Map<org.raml.interfaces.model.ActionType, IAction> actions)
+    public void setActions(Map<ActionType, IAction> actions)
     {
         this.actions = actions;
     }
@@ -160,7 +160,7 @@ public class Resource implements Serializable, IResource
         this.resources = resources;
     }
 
-    public Map<String, IAbstractParam> getUriParameters()
+    public Map<String, IParameter> getUriParameters()
     {
         return uriParameters;
     }
@@ -169,11 +169,11 @@ public class Resource implements Serializable, IResource
      * @return URI parameters defined for the current resource plus
      * all URI parameters defined in the resource hierarchy
      */
-    public Map<String, IAbstractParam> getResolvedUriParameters()
+    public Map<String, IParameter> getResolvedUriParameters()
     {
         if (parentResource != null)
         {
-            Map<String, IAbstractParam> uriParams = new HashMap<String, IAbstractParam>(parentResource.getResolvedUriParameters());
+            Map<String, IParameter> uriParams = new HashMap<String, IParameter>(parentResource.getResolvedUriParameters());
             uriParams.putAll(uriParameters);
             return uriParams;
         }
@@ -210,12 +210,12 @@ public class Resource implements Serializable, IResource
         this.securedBy = securedBy;
     }
 
-    public Map<String, List<IAbstractParam>> getBaseUriParameters()
+    public Map<String, List<IParameter>> getBaseUriParameters()
     {
         return baseUriParameters;
     }
 
-    public void setBaseUriParameters(Map<String, List<IAbstractParam>> baseUriParameters)
+    public void setBaseUriParameters(Map<String, List<IParameter>> baseUriParameters)
     {
         this.baseUriParameters = baseUriParameters;
     }
