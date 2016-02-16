@@ -18,13 +18,14 @@ package org.raml.parser.visitor;
 import java.util.List;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.raml.interfaces.parser.rule.IValidationResult;
 import org.raml.parser.loader.DefaultResourceLoader;
-import org.raml.parser.loader.ResourceLoader;
+import org.raml.interfaces.parser.loader.ResourceLoader;
 import org.raml.parser.rule.NodeRuleFactory;
 import org.raml.parser.rule.ValidationResult;
 import org.raml.parser.tagresolver.IncludeResolver;
 import org.raml.parser.tagresolver.PojoValidatorTagResolver;
-import org.raml.parser.tagresolver.TagResolver;
+import org.raml.interfaces.parser.tagresolver.TagResolver;
 import org.yaml.snakeyaml.nodes.MappingNode;
 
 public class RamlValidationService extends YamlValidationService
@@ -45,9 +46,9 @@ public class RamlValidationService extends YamlValidationService
     }
 
     @Override
-    protected List<ValidationResult> preValidation(MappingNode root)
+    protected List<IValidationResult> preValidation(MappingNode root)
     {
-        List<ValidationResult> validationResults = getValidator().getTemplateResolver().init(root);
+        List<IValidationResult> validationResults = getValidator().getTemplateResolver().init(root);
         validationResults.addAll(getValidator().getMediaTypeResolver().beforeDocumentStart(root));
         return validationResults;
     }

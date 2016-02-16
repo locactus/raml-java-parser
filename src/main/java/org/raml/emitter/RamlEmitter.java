@@ -29,6 +29,8 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.raml.interfaces.emitter.IRamlEmitter;
+import org.raml.interfaces.model.IRaml;
 import org.raml.model.Protocol;
 import org.raml.model.Raml;
 import org.raml.model.SecurityReference;
@@ -38,7 +40,7 @@ import org.raml.parser.annotation.Scalar;
 import org.raml.parser.annotation.Sequence;
 import org.raml.parser.utils.ReflectionUtils;
 
-public class RamlEmitter
+public class RamlEmitter implements IRamlEmitter
 {
 
     public static final String VERSION = "#%RAML 0.8";
@@ -52,7 +54,7 @@ public class RamlEmitter
     private static final Pattern NO_QUOTES = Pattern.compile("^[a-zA-Z_/+][^:]*$");
     private static final String[] LITERALS = {"yes", "no", "true", "false", "on", "off", "null"};
 
-    public String dump(Raml raml)
+    public String dump(IRaml raml)
     {
         StringBuilder dump = new StringBuilder(VERSION);
         dump.append("\n");

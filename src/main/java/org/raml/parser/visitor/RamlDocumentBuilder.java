@@ -26,19 +26,21 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.raml.interfaces.parser.loader.ResourceLoader;
+import org.raml.interfaces.parser.tagresolver.TagResolver;
+import org.raml.interfaces.parser.visitor.IRamlDocumentBuilder;
+import org.raml.interfaces.parser.visitor.TupleType;
 import org.raml.model.Raml;
 import org.raml.model.Resource;
 import org.raml.model.parameter.UriParameter;
 import org.raml.parser.builder.NodeBuilder;
 import org.raml.parser.loader.DefaultResourceLoader;
-import org.raml.parser.loader.ResourceLoader;
 import org.raml.parser.tagresolver.IncludeResolver;
 import org.raml.parser.tagresolver.JacksonTagResolver;
 import org.raml.parser.tagresolver.JaxbTagResolver;
-import org.raml.parser.tagresolver.TagResolver;
 import org.yaml.snakeyaml.nodes.MappingNode;
 
-public class RamlDocumentBuilder extends YamlDocumentBuilder<Raml>
+public class RamlDocumentBuilder extends YamlDocumentBuilder<Raml> implements IRamlDocumentBuilder
 {
 
     private TemplateResolver templateResolver;

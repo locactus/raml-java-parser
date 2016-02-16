@@ -25,11 +25,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.raml.model.Action;
-import org.raml.model.ActionType;
+import org.raml.interfaces.model.IAction;
+import org.raml.interfaces.model.IResource;
+import org.raml.interfaces.model.IResponse;
 import org.raml.model.MimeType;
-import org.raml.model.Resource;
-import org.raml.model.Response;
 import org.raml.parser.rule.ValidationResult;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
@@ -134,23 +133,23 @@ public class MediaTypeResolver
      *
      * @param resourceMap the resources to be recursively visited
      */
-    public void setBodyDefaultMediaType(Map<String, Resource> resourceMap)
+    public void setBodyDefaultMediaType(Map<String, IResource> resourceMap)
     {
         if (mediaType == null)
         {
             //no default media type set
             return;
         }
-        for (Resource resource : resourceMap.values())
+        for (IResource resource : resourceMap.values())
         {
-            Map<ActionType,Action> actionMap = resource.getActions();
-            for (Action action : actionMap.values())
+            Map<org.raml.interfaces.model.ActionType, IAction> actionMap = resource.getActions();
+            for (IAction action : actionMap.values())
             {
                 if (action.getBody() != null && action.getBody().isEmpty())
                 {
                     action.getBody().put(mediaType, new MimeType(mediaType));
                 }
-                for (Response response : action.getResponses().values())
+                for (IResponse response : action.getResponses().values())
                 {
                     if (response.getBody() != null && response.getBody().isEmpty())
                     {

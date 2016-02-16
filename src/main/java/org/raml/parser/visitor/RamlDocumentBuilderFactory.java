@@ -13,10 +13,21 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.model;
+package org.raml.parser.visitor;
 
-public enum ActionType
+import org.raml.interfaces.parser.tagresolver.TagResolver;
+import org.raml.interfaces.parser.visitor.IRamlDocumentBuilderFactory;
+import org.raml.interfaces.parser.loader.ResourceLoader;
+
+public class RamlDocumentBuilderFactory implements IRamlDocumentBuilderFactory
 {
+    public RamlDocumentBuilder create()
+    {
+        return new RamlDocumentBuilder();
+    }
 
-    GET, POST, PUT, DELETE, HEAD, PATCH, OPTIONS, TRACE
+    public RamlDocumentBuilder create(ResourceLoader resourceLoader, TagResolver... tagResolvers)
+    {
+        return new RamlDocumentBuilder(resourceLoader, tagResolvers);
+    }
 }

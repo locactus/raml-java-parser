@@ -15,10 +15,11 @@
  */
 package org.raml.parser.visitor;
 
-import static org.raml.parser.visitor.TupleType.KEY;
+import static org.raml.interfaces.parser.visitor.TupleType.KEY;
 
 import java.util.List;
 
+import org.raml.interfaces.parser.visitor.TupleType;
 import org.raml.model.Raml;
 import org.raml.parser.rule.BaseUriRule;
 import org.raml.parser.rule.DefaultTupleRule;

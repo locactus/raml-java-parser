@@ -22,6 +22,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.raml.interfaces.model.IRaml;
+import org.raml.interfaces.model.IResource;
+import org.raml.interfaces.model.ISecurityScheme;
+import org.raml.interfaces.model.ITemplate;
+import org.raml.interfaces.model.parameter.IAbstractParam;
 import org.raml.model.parameter.UriParameter;
 import org.raml.parser.annotation.Mapping;
 import org.raml.parser.annotation.Scalar;
@@ -31,7 +36,7 @@ import org.raml.parser.resolver.ResourceHandler;
 import org.raml.parser.rule.SecurityReferenceSequenceRule;
 
 
-public class Raml implements Serializable
+public class Raml implements Serializable, IRaml
 {
 
     private static final long serialVersionUID = -7107368438040691199L;
@@ -49,7 +54,7 @@ public class Raml implements Serializable
     private List<Protocol> protocols = new ArrayList<Protocol>();
 
     @Mapping(rule = org.raml.parser.rule.UriParametersRule.class)
-    private Map<String, UriParameter> baseUriParameters = new LinkedHashMap<String, UriParameter>();
+    private Map<String, IAbstractParam> baseUriParameters = new LinkedHashMap<String, IAbstractParam>();
 
     @Scalar()
     private String mediaType;
@@ -60,19 +65,19 @@ public class Raml implements Serializable
     private transient Map<String, Object> compiledSchemas;
 
     @Sequence
-    private List<Map<String, Template>> resourceTypes = new ArrayList<Map<String, Template>>();
+    private List<Map<String, ITemplate>> resourceTypes = new ArrayList<Map<String, ITemplate>>();
 
     @Sequence
-    private List<Map<String, Template>> traits = new ArrayList<Map<String, Template>>();
+    private List<Map<String, ITemplate>> traits = new ArrayList<Map<String, ITemplate>>();
 
     @Sequence
-    private List<Map<String, SecurityScheme>> securitySchemes = new ArrayList<Map<String, SecurityScheme>>();
+    private List<Map<String, ISecurityScheme>> securitySchemes = new ArrayList<Map<String, ISecurityScheme>>();
 
     @Sequence(rule = SecurityReferenceSequenceRule.class)
     private List<SecurityReference> securedBy = new ArrayList<SecurityReference>();
 
     @Mapping(handler = ResourceHandler.class, implicit = true)
-    private Map<String, Resource> resources = new LinkedHashMap<String, Resource>();
+    private Map<String, IResource> resources = new LinkedHashMap<String, IResource>();
 
     @Sequence
     private List<DocumentationItem> documentation;
@@ -91,12 +96,12 @@ public class Raml implements Serializable
         return documentation;
     }
 
-    public void setBaseUriParameters(Map<String, UriParameter> uriParameters)
+    public void setBaseUriParameters(Map<String, IAbstractParam> uriParameters)
     {
         this.baseUriParameters = uriParameters;
     }
 
-    public void setResources(Map<String, Resource> resources)
+    public void setResources(Map<String, IResource> resources)
     {
         this.resources = resources;
     }
@@ -159,32 +164,32 @@ public class Raml implements Serializable
         this.mediaType = mediaType;
     }
 
-    public Map<String, Resource> getResources()
+    public Map<String, IResource> getResources()
     {
         return resources;
     }
 
-    public Map<String, UriParameter> getBaseUriParameters()
+    public Map<String, IAbstractParam> getBaseUriParameters()
     {
         return baseUriParameters;
     }
 
-    public List<Map<String, Template>> getResourceTypes()
+    public List<Map<String, ITemplate>> getResourceTypes()
     {
         return resourceTypes;
     }
 
-    public void setResourceTypes(List<Map<String, Template>> resourceTypes)
+    public void setResourceTypes(List<Map<String, ITemplate>> resourceTypes)
     {
         this.resourceTypes = resourceTypes;
     }
 
-    public List<Map<String, Template>> getTraits()
+    public List<Map<String, ITemplate>> getTraits()
     {
         return traits;
     }
 
-    public void setTraits(List<Map<String, Template>> traits)
+    public void setTraits(List<Map<String, ITemplate>> traits)
     {
         this.traits = traits;
     }
@@ -209,12 +214,12 @@ public class Raml implements Serializable
         this.protocols = protocols;
     }
 
-    public List<Map<String, SecurityScheme>> getSecuritySchemes()
+    public List<Map<String, ISecurityScheme>> getSecuritySchemes()
     {
         return securitySchemes;
     }
 
-    public void setSecuritySchemes(List<Map<String, SecurityScheme>> securitySchemes)
+    public void setSecuritySchemes(List<Map<String, ISecurityScheme>> securitySchemes)
     {
         this.securitySchemes = securitySchemes;
     }
@@ -249,9 +254,9 @@ public class Raml implements Serializable
         this.compiledSchemas = compiledSchemas;
     }
 
-    public Resource getResource(String path)
+    public IResource getResource(String path)
     {
-        for (Resource resource : resources.values())
+        for (IResource resource : resources.values())
         {
             if (path.startsWith(resource.getRelativeUri()))
             {

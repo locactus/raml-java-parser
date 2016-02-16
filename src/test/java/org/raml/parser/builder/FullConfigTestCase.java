@@ -31,7 +31,7 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.raml.model.Action;
-import org.raml.model.ActionType;
+import org.raml.interfaces.model.ActionType;
 import org.raml.model.DocumentationItem;
 import org.raml.model.MimeType;
 import org.raml.model.ParamType;

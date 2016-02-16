@@ -20,11 +20,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.raml.interfaces.model.ISecurityReference;
 import org.raml.parser.annotation.Mapping;
 import org.raml.parser.annotation.Value;
 import org.raml.parser.resolver.MatchAllHandler;
 
-public class SecurityReference implements Serializable
+public class SecurityReference implements Serializable, ISecurityReference
 {
 
     private static final long serialVersionUID = 8349105890811346195L;

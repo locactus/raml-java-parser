@@ -19,13 +19,15 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import org.raml.interfaces.model.IMimeType;
+import org.raml.interfaces.model.parameter.IAbstractParam;
 import org.raml.model.parameter.FormParameter;
 import org.raml.parser.annotation.Key;
 import org.raml.parser.annotation.Mapping;
 import org.raml.parser.annotation.Scalar;
 import org.raml.parser.builder.SchemaTupleBuilder;
 
-public class MimeType implements Serializable
+public class MimeType implements Serializable, IMimeType
 {
 
     private static final long serialVersionUID = 6485154654435841038L;
@@ -42,7 +44,7 @@ public class MimeType implements Serializable
     private String example;
 
     @Mapping
-    private Map<String, List<FormParameter>> formParameters;
+    private Map<String, List<IAbstractParam>> formParameters;
 
     public MimeType()
     {
@@ -93,13 +95,13 @@ public class MimeType implements Serializable
         this.example = example;
     }
 
-    public Map<String, List<FormParameter>> getFormParameters()
+    public Map<String, List<IAbstractParam>> getFormParameters()
     {
         //TODO throw exception if invalid type?
         return formParameters;
     }
 
-    public void setFormParameters(Map<String, List<FormParameter>> formParameters)
+    public void setFormParameters(Map<String, List<IAbstractParam>> formParameters)
     {
         this.formParameters = formParameters;
     }

@@ -17,9 +17,10 @@ package org.raml.model;
 
 import java.io.Serializable;
 
+import org.raml.interfaces.model.ISecurityScheme;
 import org.raml.parser.annotation.Scalar;
 
-public class SecurityScheme implements Serializable
+public class SecurityScheme implements Serializable, ISecurityScheme
 {
 
     private static final long serialVersionUID = -6613409331454600471L;

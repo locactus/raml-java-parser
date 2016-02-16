@@ -27,9 +27,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.raml.parser.loader.ResourceLoader;
+import org.raml.interfaces.parser.rule.IValidationResult;
+import org.raml.interfaces.parser.visitor.IYamlValidationService;
+import org.raml.interfaces.parser.loader.ResourceLoader;
 import org.raml.parser.rule.ValidationResult;
-import org.raml.parser.tagresolver.TagResolver;
+import org.raml.interfaces.parser.tagresolver.TagResolver;
 import org.raml.parser.utils.StreamUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,12 +41,12 @@ import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
 
-public class YamlValidationService
+public class YamlValidationService implements IYamlValidationService
 {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private List<ValidationResult> errorMessage;
+    private List<IValidationResult> errorMessage;
     private YamlValidator yamlValidator;
     private ResourceLoader resourceLoader;
     private TagResolver[] tagResolvers;
@@ -53,11 +55,11 @@ public class YamlValidationService
     {
         this.resourceLoader = resourceLoader;
         this.yamlValidator = yamlValidator;
-        this.errorMessage = new ArrayList<ValidationResult>();
+        this.errorMessage = new ArrayList<IValidationResult>();
         this.tagResolvers = tagResolvers;
     }
 
-    public List<ValidationResult> validate(MappingNode root, String resourceLocation)
+    public List<IValidationResult> validate(MappingNode root, String resourceLocation)
     {
         NodeVisitor nodeVisitor = new NodeVisitor(yamlValidator, resourceLoader, tagResolvers);
         yamlValidator.getContextPath().pushRoot(resourceLocation);
@@ -66,23 +68,23 @@ public class YamlValidationService
         return errorMessage;
     }
 
-    public List<ValidationResult> validate(String resourceLocation)
+    public List<IValidationResult> validate(String resourceLocation)
     {
         InputStream resourceStream = resourceLoader.fetchResource(resourceLocation);
         return validate(resourceStream, resourceLocation);
     }
 
-    public List<ValidationResult> validate(String content, String resourceLocation)
+    public List<IValidationResult> validate(String content, String resourceLocation)
     {
         return validate(new StringReader(content), resourceLocation);
     }
 
-    public List<ValidationResult> validate(InputStream content, String resourceLocation)
+    public List<IValidationResult> validate(InputStream content, String resourceLocation)
     {
         return validate(StreamUtils.reader(content), resourceLocation);
     }
 
-    public List<ValidationResult> validate(Reader content, String resourceLocation)
+    public List<IValidationResult> validate(Reader content, String resourceLocation)
     {
         long startTime = currentTimeMillis();
 
@@ -123,21 +125,21 @@ public class YamlValidationService
     }
 
     @Deprecated
-    public List<ValidationResult> validate(Reader content)
+    public List<IValidationResult> validate(Reader content)
     {
         return validate(content, new File("").getPath());
     }
 
     @Deprecated
-    public List<ValidationResult> validate(InputStream content)
+    public List<IValidationResult> validate(InputStream content)
     {
         return validate(StreamUtils.reader(content));
     }
 
-    protected List<ValidationResult> preValidation(MappingNode root)
+    protected List<IValidationResult> preValidation(MappingNode root)
     {
         //template method
-        return new ArrayList<ValidationResult>();
+        return new ArrayList<IValidationResult>();
     }
 
     protected YamlValidator getValidator()

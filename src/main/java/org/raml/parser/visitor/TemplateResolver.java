@@ -35,10 +35,12 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.raml.interfaces.parser.rule.IValidationResult;
+import org.raml.interfaces.parser.visitor.NodeHandler;
 import org.raml.model.Action;
-import org.raml.model.ActionType;
+import org.raml.interfaces.model.ActionType;
 import org.raml.model.Resource;
-import org.raml.parser.loader.ResourceLoader;
+import org.raml.interfaces.parser.loader.ResourceLoader;
 import org.raml.parser.rule.ValidationResult;
 import org.raml.parser.tagresolver.ContextPathAware;
 import org.raml.parser.tagresolver.IncludeResolver;
@@ -92,9 +94,9 @@ public class TemplateResolver
         return traitsMap;
     }
 
-    public List<ValidationResult> init(MappingNode rootNode)
+    public List<IValidationResult> init(MappingNode rootNode)
     {
-        List<ValidationResult> validationResults = new ArrayList<ValidationResult>();
+        List<IValidationResult> validationResults = new ArrayList<IValidationResult>();
 
         if (rootNode == null)
         {
@@ -133,7 +135,7 @@ public class TemplateResolver
         return validationResults;
     }
 
-    private void loopTemplateSequence(SequenceNode templateSequence, String templateType, List<ValidationResult> validationResults)
+    private void loopTemplateSequence(SequenceNode templateSequence, String templateType, List<IValidationResult> validationResults)
     {
         List<Node> prunedTemplates = new ArrayList<Node>();
         for (int j = 0; j < templateSequence.getValue().size(); j++)

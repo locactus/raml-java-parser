@@ -18,20 +18,16 @@ package org.raml.parser.rule;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.raml.interfaces.parser.rule.IValidationResult;
 import org.raml.parser.tagresolver.ContextPath;
 import org.raml.parser.visitor.IncludeInfo;
 import org.yaml.snakeyaml.error.Mark;
 import org.yaml.snakeyaml.nodes.Node;
 
-public class ValidationResult
+public class ValidationResult implements IValidationResult
 {
 
     public static final int UNKNOWN = -1;
-
-    public enum Level
-    {
-        ERROR, WARN, INFO
-    }
 
     private Level level;
     private String message;
