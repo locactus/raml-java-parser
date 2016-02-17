@@ -29,7 +29,7 @@ public class EmptyConfigTestCase
     public void emptyConfigTestCase()
     {
         String simpleTest = "";
-        IRamlDocumentBuilder builder = new RamlDocumentBuilder();
+        RamlDocumentBuilder builder = new RamlDocumentBuilder();
         IRaml raml = builder.build(simpleTest, "");
         Assert.assertTrue(raml != null);
     }

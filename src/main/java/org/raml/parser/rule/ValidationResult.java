@@ -118,12 +118,12 @@ public class ValidationResult implements IValidationResult
         return true;
     }
 
-    public static List<ValidationResult> getLevel(Level level, List<ValidationResult> results)
+    public static List<IValidationResult> getLevel(Level level, List<IValidationResult> results)
     {
-        List<ValidationResult> filtered = new ArrayList<ValidationResult>();
-        for (ValidationResult result : results)
+        List<IValidationResult> filtered = new ArrayList<IValidationResult>();
+        for (IValidationResult result : results)
         {
-            if (result.level == level)
+            if (result.getLevel() == level)
             {
                 filtered.add(result);
             }

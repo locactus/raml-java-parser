@@ -48,7 +48,7 @@ public class EmitterTestCase extends AbstractRamlTestCase
     @Test
     public void emitFullConfigFromRaml()
     {
-        IRaml raml = parseRaml("org/raml/full-config.yaml");
+        Raml raml = parseRaml("org/raml/full-config.yaml");
         IRamlEmitter emitter = new RamlEmitter();
         String dumpFromRaml = emitter.dump(raml);
         verifyFullDump(raml, dumpFromRaml);
@@ -57,7 +57,7 @@ public class EmitterTestCase extends AbstractRamlTestCase
     @Test
     public void emitFullConfigFromAst()
     {
-        IRamlDocumentBuilder builder = new RamlDocumentBuilder();
+        RamlDocumentBuilder builder = new RamlDocumentBuilder();
         IRaml raml = parseRaml("org/raml/full-config.yaml", builder);
         String dumpFromAst = YamlDocumentBuilder.dumpFromAst(builder.getRootNode());
         verifyDump(raml, dumpFromAst);
@@ -66,7 +66,7 @@ public class EmitterTestCase extends AbstractRamlTestCase
     @Test
     public void emitConfigWithIncludesFromAst()
     {
-        IRamlDocumentBuilder builder = new RamlDocumentBuilder();
+        RamlDocumentBuilder builder = new RamlDocumentBuilder();
         IRaml raml = parseRaml("org/raml/root-elements-includes.yaml", builder);
         String dumpFromAst = YamlDocumentBuilder.dumpFromAst(builder.getRootNode());
         verifyDump(raml, dumpFromAst);

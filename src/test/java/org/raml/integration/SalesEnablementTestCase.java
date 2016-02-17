@@ -74,7 +74,7 @@ public class SalesEnablementTestCase extends AbstractRamlTestCase
     @Test
     public void emitter() throws Exception
     {
-        IRamlDocumentBuilder builder1 = new RamlDocumentBuilder();
+        RamlDocumentBuilder builder1 = new RamlDocumentBuilder();
         IRaml raml1 = parseRaml(ramlSource, builder1);
         String emitted1 = YamlDocumentBuilder.dumpFromAst(builder1.getRootNode());
 

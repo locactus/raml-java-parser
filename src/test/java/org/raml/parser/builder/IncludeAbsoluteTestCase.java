@@ -29,7 +29,7 @@ public class IncludeAbsoluteTestCase extends AbstractRamlTestCase
     public void absoluteClasspath()
     {
         String location = "org/raml/include/include-main-absolute-classpath.yaml";
-        IRaml raml = parseRaml(location);
+        Raml raml = parseRaml(location);
         assertThat(raml.getResource("/main/absolute").getDescription(), is("absolute"));
         assertThat(raml.getResource("/main/absolute/relative").getDescription(), is("relative"));
     }

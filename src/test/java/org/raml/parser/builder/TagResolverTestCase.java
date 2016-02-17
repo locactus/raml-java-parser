@@ -46,7 +46,7 @@ public class TagResolverTestCase extends AbstractRamlTestCase
     @Test
     public void customResolver()
     {
-        IRamlDocumentBuilder builder = new RamlDocumentBuilder(new DefaultResourceLoader(), new CustomTagResolver());
+        RamlDocumentBuilder builder = new RamlDocumentBuilder(new DefaultResourceLoader(), new CustomTagResolver());
         IRaml raml = parseRaml(RAML, builder);
         assertThat(raml.getTitle(), is("custom tag resolved"));
         assertThat(raml.getResources().get("/media").getAction(PUT).getBody().get("application/raml").getSchema(), is("custom tag resolved"));
@@ -55,7 +55,7 @@ public class TagResolverTestCase extends AbstractRamlTestCase
     @Test
     public void include()
     {
-        IRamlDocumentBuilder builder = new RamlDocumentBuilder(new DefaultResourceLoader(), new CustomTagResolver());
+        RamlDocumentBuilder builder = new RamlDocumentBuilder(new DefaultResourceLoader(), new CustomTagResolver());
         IRaml raml = parseRaml(RAML, builder);
         assertThat(raml.getResources().get("/file").getAction(PUT).getBody().get("application/json").getSchema(), containsString("file-json"));
     }

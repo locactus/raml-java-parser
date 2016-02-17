@@ -118,11 +118,11 @@ public class DefaultMediaTypeTestCase extends AbstractRamlTestCase
     @Test
     public void emitter()
     {
-        IRamlDocumentBuilder builder1 = new RamlDocumentBuilder();
+        RamlDocumentBuilder builder1 = new RamlDocumentBuilder();
         IRaml raml1 = parseRaml(ramlSource, builder1);
         String emitted1 = YamlDocumentBuilder.dumpFromAst(builder1.getRootNode());
 
-        IRamlDocumentBuilder builder2 = new RamlDocumentBuilder();
+        RamlDocumentBuilder builder2 = new RamlDocumentBuilder();
         IRaml raml2 = builder2.build(emitted1, "");
 
         assertThat(raml2.getResources().get("/simple").getActions().size(),

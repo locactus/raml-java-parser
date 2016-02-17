@@ -239,7 +239,7 @@ public class YamlDocumentBuilder<T> implements NodeHandler, ContextPathAware, IY
         }
         catch (Exception e)
         {
-            throw new RuntimeException(e);
+              throw new RuntimeException(e);
         }
         return true;
     }

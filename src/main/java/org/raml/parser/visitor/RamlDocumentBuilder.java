@@ -42,7 +42,7 @@ import org.raml.parser.tagresolver.JacksonTagResolver;
 import org.raml.parser.tagresolver.JaxbTagResolver;
 import org.yaml.snakeyaml.nodes.MappingNode;
 
-public class RamlDocumentBuilder extends YamlDocumentBuilder<IRaml> implements IYamlDocumentBuilder<IRaml>
+public class RamlDocumentBuilder extends YamlDocumentBuilder<Raml> implements IYamlDocumentBuilder<Raml>
 {
 
     private TemplateResolver templateResolver;
@@ -55,7 +55,7 @@ public class RamlDocumentBuilder extends YamlDocumentBuilder<IRaml> implements I
 
     public RamlDocumentBuilder(ResourceLoader resourceLoader, TagResolver... tagResolvers)
     {
-        super(IRaml.class, resourceLoader, defaultResolver(tagResolvers));
+        super(Raml.class, resourceLoader, defaultResolver(tagResolvers));
     }
 
     private static TagResolver[] defaultResolver(TagResolver[] tagResolvers)

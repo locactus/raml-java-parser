@@ -37,17 +37,17 @@ public class AbstractRamlTestCase
 
     protected static final Logger logger = LoggerFactory.getLogger(AbstractRamlTestCase.class);
 
-    protected static IRaml parseRaml(String resourceLocation)
+    protected static Raml parseRaml(String resourceLocation)
     {
-        return new IRamlDocumentBuilder().build(getInputStream(resourceLocation), resourceLocation);
+        return new RamlDocumentBuilder().build(getInputStream(resourceLocation), resourceLocation);
     }
 
-    protected static IRaml parseRaml(String raml, String resourceLocation)
+    protected static Raml parseRaml(String raml, String resourceLocation)
     {
         return new RamlDocumentBuilder().build(raml, resourceLocation);
     }
 
-    protected static IRaml parseRaml(String resourceLocation, IRamlDocumentBuilder builder)
+    protected static Raml parseRaml(String resourceLocation, RamlDocumentBuilder builder)
     {
         return builder.build(getInputStream(resourceLocation), resourceLocation);
     }
