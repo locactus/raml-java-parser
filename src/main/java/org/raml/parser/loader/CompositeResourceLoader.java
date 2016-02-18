@@ -17,6 +17,8 @@ package org.raml.parser.loader;
 
 import java.io.InputStream;
 
+import org.raml.interfaces.parser.loader.ResourceLoader;
+
 public class CompositeResourceLoader implements ResourceLoader
 {
 
