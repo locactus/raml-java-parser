@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
-import org.raml.parser.loader.ResourceLoader;
+import org.raml.interfaces.parser.loader.ResourceLoader;
 import org.raml.parser.rule.LSInputImpl;
 import org.raml.parser.tagresolver.ContextPath;
 import org.raml.parser.utils.StreamUtils;

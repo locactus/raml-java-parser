@@ -38,9 +38,10 @@ import javax.xml.XMLConstants;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.SchemaFactory;
 
+import org.raml.interfaces.parser.loader.ResourceLoader;
 import org.raml.parser.ResolveResourceException;
 import org.raml.parser.XsdResourceResolver;
-import org.raml.parser.loader.ResourceLoader;
+import org.raml.interfaces.parser.loader.ResourceLoader;
 import org.raml.parser.loader.ResourceLoaderAware;
 import org.raml.parser.tagresolver.ContextPath;
 import org.raml.parser.tagresolver.ContextPathAware;

@@ -18,27 +18,24 @@ package org.raml.parser.rule;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.raml.interfaces.parser.rule.IValidationResult;
+import org.raml.interfaces.parser.tagresolver.IContextPath;
 import org.raml.parser.tagresolver.ContextPath;
 import org.raml.parser.visitor.IncludeInfo;
 import org.yaml.snakeyaml.error.Mark;
 import org.yaml.snakeyaml.nodes.Node;
 
-public class ValidationResult
+public class ValidationResult implements IValidationResult
 {
 
     public static final int UNKNOWN = -1;
-
-    public enum Level
-    {
-        ERROR, WARN, INFO
-    }
 
     private Level level;
     private String message;
     private int line;
     private int startColumn;
     private int endColumn;
-    private ContextPath contextPath;
+    private IContextPath contextPath;
     private IncludeInfo extraIncludeInfo;
 
     private ValidationResult(Level level, String message, int line, int startColumn, int endColumn)
@@ -89,7 +86,7 @@ public class ValidationResult
         return null;
     }
 
-    public ContextPath getIncludeContext()
+    public IContextPath getIncludeContext()
     {
         return contextPath;
     }
@@ -121,12 +118,12 @@ public class ValidationResult
         return true;
     }
 
-    public static List<ValidationResult> getLevel(Level level, List<ValidationResult> results)
+    public static List<IValidationResult> getLevel(Level level, List<IValidationResult> results)
     {
-        List<ValidationResult> filtered = new ArrayList<ValidationResult>();
-        for (ValidationResult result : results)
+        List<IValidationResult> filtered = new ArrayList<IValidationResult>();
+        for (IValidationResult result : results)
         {
-            if (result.level == level)
+            if (result.getLevel() == level)
             {
                 filtered.add(result);
             }
