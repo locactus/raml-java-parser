@@ -20,8 +20,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.raml.interfaces.parser.rule.IValidationResult;
 import org.raml.parser.loader.DefaultResourceLoader;
-import org.raml.parser.loader.ResourceLoader;
+import org.raml.interfaces.parser.loader.ResourceLoader;
 import org.raml.parser.rule.ValidationResult;
 import org.raml.parser.visitor.RamlValidationService;
 
@@ -65,7 +66,7 @@ public class Validator
             }
             else
             {
-                for (ValidationResult item : results)
+                for (IValidationResult item : results)
                 {
                     printResult(item);
                 }
@@ -74,7 +75,7 @@ public class Validator
         }
     }
 
-    private void printResult(ValidationResult item)
+    private void printResult(IValidationResult item)
     {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("\t");
