@@ -17,29 +17,28 @@ package org.raml.parser.builder;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.raml.model.ActionType.GET;
-import static org.raml.model.ActionType.PUT;
-import static org.raml.model.ParamType.BOOLEAN;
-import static org.raml.model.ParamType.DATE;
-import static org.raml.model.ParamType.INTEGER;
-import static org.raml.model.ParamType.NUMBER;
-import static org.raml.model.ParamType.STRING;
+import static org.raml.interfaces.model.ActionType.GET;
+import static org.raml.interfaces.model.ActionType.PUT;
+import static org.raml.interfaces.model.ParamType.BOOLEAN;
+import static org.raml.interfaces.model.ParamType.DATE;
+import static org.raml.interfaces.model.ParamType.INTEGER;
+import static org.raml.interfaces.model.ParamType.NUMBER;
+import static org.raml.interfaces.model.ParamType.STRING;
 
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.raml.model.Raml;
-import org.raml.model.parameter.Header;
-import org.raml.model.parameter.QueryParameter;
+import org.raml.interfaces.model.IRaml;
+import org.raml.interfaces.model.parameter.IParameter;
+import org.raml.interfaces.parser.rule.IValidationResult;
 import org.raml.parser.rule.ValidationResult;
 
 public class ParameterEmptyTestCase extends AbstractRamlTestCase
 {
 
     private static final String ramlSource = "org/raml/params/empty-params.yaml";
-    private static Raml raml;
+    private static IRaml raml;
 
     @BeforeClass
     public static void init()
@@ -50,7 +49,7 @@ public class ParameterEmptyTestCase extends AbstractRamlTestCase
     @Test
     public void emptyHeader()
     {
-        Header header = raml.getResources().get("/car").getAction(PUT).getHeaders().get("enable-turbo");
+        IParameter header = raml.getResources().get("/car").getAction(PUT).getHeaders().get("enable-turbo");
         assertThat(header.getEnumeration().size(), is(3));
         assertThat(header.getEnumeration().get(0), is(""));
         List<ValidationResult> validationResults = validateRaml(ramlSource);

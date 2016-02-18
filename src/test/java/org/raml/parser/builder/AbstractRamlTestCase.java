@@ -22,6 +22,9 @@ import java.io.InputStream;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.raml.interfaces.model.IRaml;
+import org.raml.interfaces.parser.rule.IValidationResult;
+import org.raml.interfaces.parser.visitor.IRamlDocumentBuilder;
 import org.raml.model.Raml;
 import org.raml.parser.rule.ValidationResult;
 import org.raml.parser.visitor.RamlDocumentBuilder;
@@ -65,7 +68,7 @@ public class AbstractRamlTestCase
         if (!validationResults.isEmpty())
         {
             StringBuilder msg = new StringBuilder("Unexpected errors:\n ");
-            for (ValidationResult vr : validationResults)
+            for (IValidationResult vr : validationResults)
             {
                 msg.append("\t\t").append(vr.toString()).append("\n");
             }

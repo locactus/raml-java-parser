@@ -19,17 +19,23 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
-import static org.raml.model.ActionType.GET;
-import static org.raml.model.ActionType.HEAD;
+import static org.raml.interfaces.model.ActionType.GET;
+import static org.raml.interfaces.model.ActionType.HEAD;
 
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
 import org.raml.emitter.RamlEmitter;
+import org.raml.interfaces.emitter.IRamlEmitter;
+import org.raml.interfaces.model.IDocumentationItem;
+import org.raml.interfaces.model.IRaml;
+import org.raml.interfaces.model.parameter.IParameter;
+import org.raml.interfaces.parser.visitor.IRamlDocumentBuilder;
 import org.raml.model.DocumentationItem;
 import org.raml.model.Raml;
 import org.raml.model.SecurityScheme;
+import org.raml.model.Template;
 import org.raml.model.parameter.FormParameter;
 import org.raml.model.parameter.UriParameter;
 import org.raml.parser.builder.AbstractRamlTestCase;
@@ -43,7 +49,7 @@ public class EmitterTestCase extends AbstractRamlTestCase
     public void emitFullConfigFromRaml()
     {
         Raml raml = parseRaml("org/raml/full-config.yaml");
-        RamlEmitter emitter = new RamlEmitter();
+        IRamlEmitter emitter = new RamlEmitter();
         String dumpFromRaml = emitter.dump(raml);
         verifyFullDump(raml, dumpFromRaml);
     }
@@ -52,7 +58,7 @@ public class EmitterTestCase extends AbstractRamlTestCase
     public void emitFullConfigFromAst()
     {
         RamlDocumentBuilder builder = new RamlDocumentBuilder();
-        Raml raml = parseRaml("org/raml/full-config.yaml", builder);
+        IRaml raml = parseRaml("org/raml/full-config.yaml", builder);
         String dumpFromAst = YamlDocumentBuilder.dumpFromAst(builder.getRootNode());
         verifyDump(raml, dumpFromAst);
     }
@@ -61,7 +67,7 @@ public class EmitterTestCase extends AbstractRamlTestCase
     public void emitConfigWithIncludesFromAst()
     {
         RamlDocumentBuilder builder = new RamlDocumentBuilder();
-        Raml raml = parseRaml("org/raml/root-elements-includes.yaml", builder);
+        IRaml raml = parseRaml("org/raml/root-elements-includes.yaml", builder);
         String dumpFromAst = YamlDocumentBuilder.dumpFromAst(builder.getRootNode());
         verifyDump(raml, dumpFromAst);
     }
@@ -69,7 +75,7 @@ public class EmitterTestCase extends AbstractRamlTestCase
     @Test
     public void emitEmptyBody()
     {
-        Raml raml = parseRaml("org/raml/empty-body.raml");
+        IRaml raml = parseRaml("org/raml/empty-body.raml");
         RamlEmitter emitter = new RamlEmitter();
         emitter.dump(raml);
     }
@@ -77,7 +83,7 @@ public class EmitterTestCase extends AbstractRamlTestCase
     @Test
     public void emitRegexp()
     {
-        Raml raml = parseRaml("org/raml/emitter/pattern.yaml");
+        IRaml raml = parseRaml("org/raml/emitter/pattern.yaml");
         RamlEmitter emitter = new RamlEmitter();
         String dump = emitter.dump(raml);
         assertThat(dump, containsString("([a-zA-Z0-9_\\.\\+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-\\.]+)"));
@@ -99,7 +105,7 @@ public class EmitterTestCase extends AbstractRamlTestCase
                       "    type: number\n" +
                       "    maximum: 9.5\n" +
                       "    minimum: 2.0";
-        Raml raml = parseRaml(yaml, "");
+        IRaml raml = parseRaml(yaml, "");
         RamlEmitter emitter = new RamlEmitter();
         String dump = emitter.dump(raml);
         assertThat(dump, containsString("maximum: 8"));
@@ -111,10 +117,10 @@ public class EmitterTestCase extends AbstractRamlTestCase
         assertThat(dump, not(containsString("minimum: 2.0")));
     }
 
-    private Raml verifyDump(Raml source, String dump)
+    private IRaml verifyDump(IRaml source, String dump)
     {
         RamlDocumentBuilder verifier = new RamlDocumentBuilder();
-        Raml target = verifier.build(dump, "");
+        IRaml target = verifier.build(dump, "");
 
         assertThat(target.getTitle(), is(source.getTitle()));
         assertThat(target.getVersion(), is(source.getVersion()));
@@ -126,14 +132,14 @@ public class EmitterTestCase extends AbstractRamlTestCase
         return target;
     }
 
-    private void verifyFullDump(Raml source, String dump)
+    private void verifyFullDump(IRaml source, String dump)
     {
-        Raml target = verifyDump(source, dump);
+        IRaml target = verifyDump(source, dump);
 
         //*********** URI PARAMETERS ***********
 
-        UriParameter srcHost = source.getBaseUriParameters().get("host");
-        UriParameter tgtHost = target.getBaseUriParameters().get("host");
+        UriParameter srcHost = (UriParameter) source.getBaseUriParameters().get("host");
+        UriParameter tgtHost = (UriParameter) target.getBaseUriParameters().get("host");
         assertThat(tgtHost.getDisplayName(), is(srcHost.getDisplayName()));
         assertThat(tgtHost.getDescription(), is(srcHost.getDescription()));
         assertThat(tgtHost.getType(), is(srcHost.getType()));
@@ -141,14 +147,14 @@ public class EmitterTestCase extends AbstractRamlTestCase
         assertThat(tgtHost.getMaxLength(), is(srcHost.getMaxLength()));
         assertThat(tgtHost.getPattern(), is(srcHost.getPattern()));
 
-        UriParameter srcPort = source.getBaseUriParameters().get("port");
-        UriParameter tgtPort = target.getBaseUriParameters().get("port");
+        UriParameter srcPort = (UriParameter) source.getBaseUriParameters().get("port");
+        UriParameter tgtPort = (UriParameter) target.getBaseUriParameters().get("port");
         assertThat(tgtPort.getType(), is(srcPort.getType()));
         assertThat(tgtPort.getMinimum(), is(srcPort.getMinimum()));
         assertThat(tgtPort.getMaximum(), is(srcPort.getMaximum()));
 
-        UriParameter srcPath = source.getBaseUriParameters().get("path");
-        UriParameter tgtPath = target.getBaseUriParameters().get("path");
+        UriParameter srcPath = (UriParameter) source.getBaseUriParameters().get("path");
+        UriParameter tgtPath = (UriParameter) target.getBaseUriParameters().get("path");
         assertThat(tgtPath.getType(), is(srcPath.getType()));
         assertThat(tgtPath.getEnumeration().size(), is(srcPath.getEnumeration().size()));
         assertThat(tgtPath.getEnumeration().get(0), is(srcPath.getEnumeration().get(0)));
@@ -157,8 +163,8 @@ public class EmitterTestCase extends AbstractRamlTestCase
 
         //*********** DOCUMENTATION ***********
 
-        List<DocumentationItem> srcDoc = source.getDocumentation();
-        List<DocumentationItem> tgtDoc = target.getDocumentation();
+        List<IDocumentationItem> srcDoc = source.getDocumentation();
+        List<IDocumentationItem> tgtDoc = target.getDocumentation();
         assertThat(tgtDoc.get(0).getTitle(), is(srcDoc.get(0).getTitle()));
         assertThat(tgtDoc.get(0).getContent(), is(srcDoc.get(0).getContent()));
 
@@ -171,9 +177,8 @@ public class EmitterTestCase extends AbstractRamlTestCase
         assertThat(tgtSchemas.get(1).get("league-xml"), is(srcSchemas.get(1).get("league-xml")));
 
         //*********** FORM PARAMETERS ***********
-
-        Map<String, List<FormParameter>> srcFormParams = source.getResource("/media").getAction(GET).getBody().get("multipart/form-data").getFormParameters();
-        Map<String, List<FormParameter>> tgtFormParams = target.getResource("/media").getAction(GET).getBody().get("multipart/form-data").getFormParameters();
+        Map<String, List<IParameter>> srcFormParams = source.getResource("/media").getAction(GET).getBody().get("multipart/form-data").getFormParameters();
+        Map<String, List<IParameter>> tgtFormParams = target.getResource("/media").getAction(GET).getBody().get("multipart/form-data").getFormParameters();
         assertThat(srcFormParams.size(), is(tgtFormParams.size()));
         assertThat(srcFormParams.get("form-1").size(), is(tgtFormParams.get("form-1").size()));
         assertThat(srcFormParams.get("form-1").get(0).getDisplayName(), is(tgtFormParams.get("form-1").get(0).getDisplayName()));
@@ -183,10 +188,10 @@ public class EmitterTestCase extends AbstractRamlTestCase
         //*********** RESOURCE TYPES ************
 
         assertThat(target.getResourceTypes().size(), is(source.getResourceTypes().size()));
-        assertThat(target.getResourceTypes().get(0).get("basic").getDisplayName(),
-                   is(source.getResourceTypes().get(0).get("basic").getDisplayName()));
-        assertThat(target.getResourceTypes().get(1).get("complex").getDisplayName(),
-                   is(source.getResourceTypes().get(1).get("complex").getDisplayName()));
+        assertThat(((Template)target.getResourceTypes().get(0).get("basic")).getDisplayName(),
+                   is(((Template)source.getResourceTypes().get(0).get("basic")).getDisplayName()));
+        assertThat(((Template)target.getResourceTypes().get(1).get("complex")).getDisplayName(),
+                   is(((Template)source.getResourceTypes().get(1).get("complex")).getDisplayName()));
 
         assertThat(target.getResource("/").getType(), is(source.getResource("/").getType()));
         assertThat(target.getResource("/media").getType(), is(source.getResource("/media").getType()));
@@ -194,18 +199,18 @@ public class EmitterTestCase extends AbstractRamlTestCase
         //*********** TRAITS ************
 
         assertThat(target.getTraits().size(), is(source.getTraits().size()));
-        assertThat(target.getTraits().get(0).get("simple").getDisplayName(),
-                   is(source.getTraits().get(0).get("simple").getDisplayName()));
-        assertThat(target.getTraits().get(1).get("knotty").getDisplayName(),
-                   is(source.getTraits().get(1).get("knotty").getDisplayName()));
+        assertThat(((Template)target.getTraits().get(0).get("simple")).getDisplayName(),
+                   is(((Template)source.getTraits().get(0).get("simple")).getDisplayName()));
+        assertThat(((Template)target.getTraits().get(1).get("knotty")).getDisplayName(),
+                   is(((Template)source.getTraits().get(1).get("knotty")).getDisplayName()));
 
         assertThat(target.getResource("/").getAction(HEAD).getIs(), is(source.getResource("/").getAction(HEAD).getIs()));
 
         //*********** SECURITY SCHEMES ************
 
         assertThat(target.getSecuritySchemes().size(), is(source.getSecuritySchemes().size()));
-        SecurityScheme tOauth2 = target.getSecuritySchemes().get(0).get("oauth_2_0");
-        SecurityScheme sOauth2 = source.getSecuritySchemes().get(0).get("oauth_2_0");
+        SecurityScheme tOauth2 = (SecurityScheme) target.getSecuritySchemes().get(0).get("oauth_2_0");
+        SecurityScheme sOauth2 = (SecurityScheme) source.getSecuritySchemes().get(0).get("oauth_2_0");
         assertThat(tOauth2.getDescription(), is(sOauth2.getDescription()));
         assertThat(tOauth2.getDescribedBy().getHeaders().size(), is(sOauth2.getDescribedBy().getHeaders().size()));
         assertThat(tOauth2.getDescribedBy().getHeaders().get("Authorization").getDescription(),

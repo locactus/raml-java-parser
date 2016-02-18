@@ -19,8 +19,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.raml.model.ActionType.GET;
-import static org.raml.model.ActionType.PUT;
+import static org.raml.interfaces.model.ActionType.GET;
+import static org.raml.interfaces.model.ActionType.PUT;
 
 import java.util.List;
 import java.util.Map;
@@ -28,7 +28,12 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.raml.model.ActionType;
+import org.raml.interfaces.model.ActionType;
+import org.raml.interfaces.model.IMimeType;
+import org.raml.interfaces.model.IRaml;
+import org.raml.interfaces.model.IResource;
+import org.raml.interfaces.parser.rule.IValidationResult;
+import org.raml.interfaces.parser.visitor.IRamlDocumentBuilder;
 import org.raml.model.MimeType;
 import org.raml.model.Raml;
 import org.raml.model.Resource;
@@ -41,7 +46,7 @@ public class DefaultMediaTypeTestCase extends AbstractRamlTestCase
 {
 
     private static final String ramlSource = "org/raml/media-type.yaml";
-    private static Raml raml;
+    private static IRaml raml;
 
     @BeforeClass
     public static void init()
@@ -53,24 +58,24 @@ public class DefaultMediaTypeTestCase extends AbstractRamlTestCase
     public void applyDefault()
     {
 
-        Resource simpleResource = raml.getResources().get("/simple");
+        IResource simpleResource = raml.getResources().get("/simple");
         assertThat(simpleResource.getActions().size(), is(4));
 
-        Map<String, MimeType> getBody = simpleResource.getAction(ActionType.GET).getBody();
+        Map<String, IMimeType> getBody = simpleResource.getAction(ActionType.GET).getBody();
         assertThat(getBody, nullValue());
-        Map<String, MimeType> getResponseBody = simpleResource.getAction(ActionType.GET).getResponses().get("200").getBody();
+        Map<String, IMimeType> getResponseBody = simpleResource.getAction(ActionType.GET).getResponses().get("200").getBody();
         assertThat(getResponseBody.size(), is(1));
         assertThat(getResponseBody.containsKey("application/json"), is(true));
 
-        Map<String, MimeType> postBody = simpleResource.getAction(ActionType.POST).getBody();
+        Map<String, IMimeType> postBody = simpleResource.getAction(ActionType.POST).getBody();
         assertThat(postBody.size(), is(1));
         assertThat(postBody.containsKey("application/json"), is(true));
 
-        Map<String, MimeType> putBody = simpleResource.getAction(PUT).getBody();
+        Map<String, IMimeType> putBody = simpleResource.getAction(PUT).getBody();
         assertThat(putBody.size(), is(1));
         assertThat(putBody.containsKey("application/json"), is(true));
 
-        Map<String, MimeType> deleteBody = simpleResource.getAction(ActionType.DELETE).getResponses().get("204").getBody();
+        Map<String, IMimeType> deleteBody = simpleResource.getAction(ActionType.DELETE).getResponses().get("204").getBody();
         assertThat(deleteBody, nullValue());
 
     }
@@ -78,10 +83,10 @@ public class DefaultMediaTypeTestCase extends AbstractRamlTestCase
     @Test
     public void bodyWithFormParams()
     {
-        Resource formResource = raml.getResources().get("/form");
+        IResource formResource = raml.getResources().get("/form");
         assertThat(formResource.getActions().size(), is(1));
 
-        Map<String, MimeType> postBody = formResource.getAction(ActionType.POST).getBody();
+        Map<String, IMimeType> postBody = formResource.getAction(ActionType.POST).getBody();
         assertThat(postBody.size(), is(1));
         assertThat(postBody.containsKey("application/json"), is(true));
     }
@@ -89,7 +94,7 @@ public class DefaultMediaTypeTestCase extends AbstractRamlTestCase
     @Test
     public void emptyBody()
     {
-        Resource resource = raml.getResource("/empty");
+        IResource resource = raml.getResource("/empty");
         assertThat(resource.getAction(PUT).getBody().size(), is(1));
         assertThat(resource.getAction(PUT).getResponses().get("200").getBody().size(), is(1));
     }
@@ -97,7 +102,7 @@ public class DefaultMediaTypeTestCase extends AbstractRamlTestCase
     @Test
     public void noBody()
     {
-        Resource resource = raml.getResource("/nobody");
+        IResource resource = raml.getResource("/nobody");
         assertThat(resource.getAction(GET).getBody(), nullValue());
         assertThat(resource.getAction(GET).getResponses().get("200").getBody(), nullValue());
     }
@@ -114,11 +119,11 @@ public class DefaultMediaTypeTestCase extends AbstractRamlTestCase
     public void emitter()
     {
         RamlDocumentBuilder builder1 = new RamlDocumentBuilder();
-        Raml raml1 = parseRaml(ramlSource, builder1);
+        IRaml raml1 = parseRaml(ramlSource, builder1);
         String emitted1 = YamlDocumentBuilder.dumpFromAst(builder1.getRootNode());
 
         RamlDocumentBuilder builder2 = new RamlDocumentBuilder();
-        Raml raml2 = builder2.build(emitted1, "");
+        IRaml raml2 = builder2.build(emitted1, "");
 
         assertThat(raml2.getResources().get("/simple").getActions().size(),
                    is(raml1.getResources().get("/simple").getActions().size()));

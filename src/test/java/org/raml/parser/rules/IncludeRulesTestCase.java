@@ -23,6 +23,9 @@ import static org.junit.Assert.assertThat;
 import java.util.List;
 
 import org.junit.Test;
+import org.raml.interfaces.parser.rule.IValidationResult;
+import org.raml.interfaces.parser.tagresolver.IContextPath;
+import org.raml.interfaces.parser.visitor.IIncludeInfo;
 import org.raml.parser.builder.AbstractRamlTestCase;
 import org.raml.parser.rule.ValidationResult;
 import org.raml.parser.tagresolver.ContextPath;
@@ -66,9 +69,9 @@ public class IncludeRulesTestCase extends AbstractRamlTestCase
         assertThat(errors.get(1).getLine() + 1, is(2));
         assertThat(errors.get(1).getStartColumn() + 1, is(1));
         assertThat(errors.get(1).getEndColumn() + 1, is(12));
-        ContextPath contextPath = errors.get(1).getIncludeContext();
+        IContextPath contextPath = errors.get(1).getIncludeContext();
         assertThat(contextPath.size(), is(2));
-        IncludeInfo includeInfo = contextPath.pop();
+        IIncludeInfo includeInfo = contextPath.pop();
         assertThat(includeInfo.getLine() + 1, is(7));
         assertThat(includeInfo.getStartColumn() + 1, is(14));
         assertThat(includeInfo.getEndColumn() + 1, is(47));

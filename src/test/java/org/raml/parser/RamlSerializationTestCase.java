@@ -20,15 +20,26 @@ import static org.junit.Assert.assertThat;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.SerializationUtils;
 import org.junit.Test;
+import org.raml.interfaces.model.IAction;
+import org.raml.interfaces.model.IDocumentationItem;
+import org.raml.interfaces.model.IMimeType;
+import org.raml.interfaces.model.IRaml;
+import org.raml.interfaces.model.IResource;
+import org.raml.interfaces.model.IResponse;
+import org.raml.interfaces.model.ISecurityReference;
+import org.raml.interfaces.model.ISecurityScheme;
+import org.raml.interfaces.model.ITemplate;
+import org.raml.interfaces.model.parameter.IParameter;
 import org.raml.model.Action;
-import org.raml.model.ActionType;
+import org.raml.interfaces.model.ActionType;
 import org.raml.model.DocumentationItem;
 import org.raml.model.MimeType;
-import org.raml.model.Protocol;
+import org.raml.interfaces.model.Protocol;
 import org.raml.model.Raml;
 import org.raml.model.Resource;
 import org.raml.model.Response;
@@ -47,33 +58,33 @@ public class RamlSerializationTestCase
     @Test
     public void roundtrip()
     {
-        MimeType mimeType = new MimeType();
-        mimeType.setFormParameters(buildMap(Collections.singletonList(new FormParameter())));
+        IMimeType mimeType = new MimeType();
+        mimeType.setFormParameters(this.buildMap(Collections.<IParameter>singletonList(new FormParameter())));
 
-        Action action = new Action();
+        IAction action = new Action();
         action.setBody(buildMap(mimeType));
-        action.setResponses(buildMap(new Response()));
+        action.setResponses(this.<IResponse>buildMap(new Response()));
 
-        Resource resource = new Resource();
+        IResource resource = new Resource();
         resource.setActions(buildMap(ActionType.GET, action));
 
         SecuritySchemeDescriptor describedBy = new SecuritySchemeDescriptor();
-        describedBy.setHeaders(buildMap(new Header()));
+        describedBy.setHeaders(this.<IParameter>buildMap(new Header()));
 
-        SecurityScheme securityScheme = new SecurityScheme();
+        ISecurityScheme securityScheme = new SecurityScheme();
         securityScheme.setDescribedBy(describedBy);
         securityScheme.setSettings(new SecuritySettings());
 
-        Raml raml = new Raml();
+        IRaml raml = new Raml();
         raml.setTitle("hi");
-        raml.setBaseUriParameters(buildMap(new UriParameter()));
-        raml.setDocumentation(Collections.singletonList(new DocumentationItem()));
+        raml.setBaseUriParameters(this.<IParameter>buildMap(new UriParameter()));
+        raml.setDocumentation(Collections.<IDocumentationItem>singletonList(new DocumentationItem()));
         raml.setResources(buildMap(resource));
         raml.setProtocols(Collections.singletonList(Protocol.HTTP));
-        raml.setResourceTypes(Collections.singletonList(buildMap(new Template())));
-        raml.setTraits(Collections.singletonList(buildMap(new Template())));
+        raml.setResourceTypes(Collections.singletonList(this.<ITemplate>buildMap(new Template())));
+        raml.setTraits(Collections.singletonList(this.<ITemplate>buildMap(new Template())));
         raml.setSecuritySchemes(Collections.singletonList(buildMap(securityScheme)));
-        raml.setSecuredBy(Collections.singletonList(new SecurityReference("ref")));
+        raml.setSecuredBy(Collections.<ISecurityReference>singletonList(new SecurityReference("ref")));
 
         byte[] bytes = SerializationUtils.serialize(raml);
         Raml copy = (Raml) SerializationUtils.deserialize(bytes);

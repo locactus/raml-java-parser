@@ -25,7 +25,10 @@ import java.util.Set;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.raml.model.ActionType;
+import org.raml.interfaces.model.ActionType;
+import org.raml.interfaces.model.IRaml;
+import org.raml.interfaces.model.IResource;
+import org.raml.interfaces.model.parameter.IParameter;
 import org.raml.model.Raml;
 import org.raml.model.Resource;
 import org.raml.model.parameter.QueryParameter;
@@ -33,7 +36,7 @@ import org.raml.model.parameter.QueryParameter;
 public class ResourceTypesTraitsTestCase extends AbstractRamlTestCase
 {
 
-    private static Raml raml;
+    private static IRaml raml;
 
     @BeforeClass
     public static void init()
@@ -44,7 +47,7 @@ public class ResourceTypesTraitsTestCase extends AbstractRamlTestCase
     @Test
     public void mixed()
     {
-        Resource mixed = raml.getResources().get("/mixed");
+        IResource mixed = raml.getResources().get("/mixed");
         assertThat(mixed.getActions().size(), is(1));
         String[] h = {"hAction", "hType1", "hType0", "hTraitA", "hTraitR", "hTraitT1A",
                       "hTraitT1R", "hTraitT0A", "hTraitT0R"};
@@ -55,9 +58,9 @@ public class ResourceTypesTraitsTestCase extends AbstractRamlTestCase
     @Test
     public void override()
     {
-        Resource override = raml.getResources().get("/override");
+        IResource override = raml.getResources().get("/override");
         assertThat(override.getActions().size(), is(1));
-        Map<String,QueryParameter> queryParameters = override.getAction(ActionType.GET).getQueryParameters();
+        Map<String,IParameter> queryParameters = override.getAction(ActionType.GET).getQueryParameters();
         assertThat(queryParameters.size(), is(9));
         assertThat(queryParameters.get("action").getDisplayName(), is("action"));
         assertThat(queryParameters.get("traitOverA").getDisplayName(), is("traitOverA"));

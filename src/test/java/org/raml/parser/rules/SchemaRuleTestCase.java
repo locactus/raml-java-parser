@@ -25,6 +25,9 @@ import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.raml.interfaces.parser.rule.IValidationResult;
+import org.raml.interfaces.parser.tagresolver.IContextPath;
+import org.raml.interfaces.parser.visitor.IIncludeInfo;
 import org.raml.parser.builder.AbstractRamlTestCase;
 import org.raml.parser.rule.ValidationResult;
 import org.raml.parser.tagresolver.ContextPath;
@@ -89,9 +92,9 @@ public class SchemaRuleTestCase extends AbstractRamlTestCase
         assertThat(validationResults.get(0).getLine() + 1, is(4));
         assertThat(validationResults.get(0).getStartColumn(), is(UNKNOWN));
         assertThat(validationResults.get(0).getEndColumn(), is(UNKNOWN));
-        ContextPath includeContext = validationResults.get(0).getIncludeContext();
+        IContextPath includeContext = validationResults.get(0).getIncludeContext();
         assertThat(includeContext.size(), is(2));
-        IncludeInfo includeInfo = includeContext.pop();
+        IIncludeInfo includeInfo = includeContext.pop();
         assertThat(includeInfo.getLine() + 1, is(7));
         assertThat(includeInfo.getStartColumn() + 1, is(25));
         assertThat(includeInfo.getEndColumn() + 1, is(46));
@@ -118,9 +121,9 @@ public class SchemaRuleTestCase extends AbstractRamlTestCase
         assertThat(validationResults.get(0).getLine() + 1, is(4));
         assertThat(validationResults.get(0).getStartColumn(), is(UNKNOWN));
         assertThat(validationResults.get(0).getEndColumn(), is(UNKNOWN));
-        ContextPath includeContext = validationResults.get(0).getIncludeContext();
+        IContextPath includeContext = validationResults.get(0).getIncludeContext();
         assertThat(includeContext.size(), is(2));
-        IncludeInfo includeInfo = includeContext.pop();
+        IIncludeInfo includeInfo = includeContext.pop();
         assertThat(includeInfo.getLine() + 1, is(4));
         assertThat(includeInfo.getStartColumn() + 1, is(15));
         assertThat(includeInfo.getEndColumn() + 1, is(36));
@@ -139,9 +142,9 @@ public class SchemaRuleTestCase extends AbstractRamlTestCase
         assertThat(validationResults.get(0).getLine() + 1, is(5));
         assertThat(validationResults.get(0).getStartColumn(), is(UNKNOWN));
         assertThat(validationResults.get(0).getEndColumn(), is(UNKNOWN));
-        ContextPath includeContext = validationResults.get(0).getIncludeContext();
+        IContextPath includeContext = validationResults.get(0).getIncludeContext();
         assertThat(includeContext.size(), is(2));
-        IncludeInfo includeInfo = includeContext.pop();
+        IIncludeInfo includeInfo = includeContext.pop();
         assertThat(includeInfo.getLine() + 1, is(4));
         assertThat(includeInfo.getStartColumn() + 1, is(15));
         assertThat(includeInfo.getEndColumn() + 1, is(52));
@@ -196,9 +199,9 @@ public class SchemaRuleTestCase extends AbstractRamlTestCase
         assertThat(validationResults.get(0).getLine() + 1, is(8));
         assertThat(validationResults.get(0).getStartColumn(), is(UNKNOWN));
         assertThat(validationResults.get(0).getEndColumn(), is(UNKNOWN));
-        ContextPath includeContext = validationResults.get(0).getIncludeContext();
+        IContextPath includeContext = validationResults.get(0).getIncludeContext();
         assertThat(includeContext.size(), is(2));
-        IncludeInfo includeInfo = includeContext.pop();
+        IIncludeInfo includeInfo = includeContext.pop();
         assertThat(includeInfo.getLine() + 1, is(7));
         assertThat(includeInfo.getStartColumn() + 1, is(25));
         assertThat(includeInfo.getEndColumn() + 1, is(45));

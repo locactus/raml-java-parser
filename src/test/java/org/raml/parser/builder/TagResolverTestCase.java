@@ -18,18 +18,21 @@ package org.raml.parser.builder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
-import static org.raml.model.ActionType.PUT;
+import static org.raml.interfaces.model.ActionType.PUT;
 
 import java.util.List;
 
 import org.junit.Test;
+import org.raml.interfaces.model.IRaml;
+import org.raml.interfaces.parser.rule.IValidationResult;
+import org.raml.interfaces.parser.visitor.IRamlDocumentBuilder;
 import org.raml.model.Raml;
 import org.raml.parser.loader.DefaultResourceLoader;
-import org.raml.parser.loader.ResourceLoader;
+import org.raml.interfaces.parser.loader.ResourceLoader;
 import org.raml.parser.rule.ValidationResult;
-import org.raml.parser.visitor.NodeHandler;
+import org.raml.interfaces.parser.visitor.NodeHandler;
 import org.raml.parser.visitor.RamlDocumentBuilder;
-import org.raml.parser.tagresolver.TagResolver;
+import org.raml.interfaces.parser.tagresolver.TagResolver;
 import org.raml.parser.visitor.RamlValidationService;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.ScalarNode;
@@ -44,7 +47,7 @@ public class TagResolverTestCase extends AbstractRamlTestCase
     public void customResolver()
     {
         RamlDocumentBuilder builder = new RamlDocumentBuilder(new DefaultResourceLoader(), new CustomTagResolver());
-        Raml raml = parseRaml(RAML, builder);
+        IRaml raml = parseRaml(RAML, builder);
         assertThat(raml.getTitle(), is("custom tag resolved"));
         assertThat(raml.getResources().get("/media").getAction(PUT).getBody().get("application/raml").getSchema(), is("custom tag resolved"));
     }
@@ -53,7 +56,7 @@ public class TagResolverTestCase extends AbstractRamlTestCase
     public void include()
     {
         RamlDocumentBuilder builder = new RamlDocumentBuilder(new DefaultResourceLoader(), new CustomTagResolver());
-        Raml raml = parseRaml(RAML, builder);
+        IRaml raml = parseRaml(RAML, builder);
         assertThat(raml.getResources().get("/file").getAction(PUT).getBody().get("application/json").getSchema(), containsString("file-json"));
     }
 

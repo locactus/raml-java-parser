@@ -18,16 +18,18 @@ package org.raml.tagresolver;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
-import static org.raml.model.ActionType.PATCH;
-import static org.raml.model.ActionType.POST;
-import static org.raml.model.ActionType.PUT;
+import static org.raml.interfaces.model.ActionType.PATCH;
+import static org.raml.interfaces.model.ActionType.POST;
+import static org.raml.interfaces.model.ActionType.PUT;
 
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import org.raml.model.Action;
-import org.raml.model.ActionType;
+import org.raml.interfaces.model.IAction;
+import org.raml.interfaces.model.ActionType;
+import org.raml.interfaces.model.IRaml;
+import org.raml.interfaces.parser.rule.IValidationResult;
 import org.raml.model.Raml;
 import org.raml.parser.builder.AbstractRamlTestCase;
 import org.raml.parser.rule.ValidationResult;
@@ -53,13 +55,13 @@ public class PojoValidatorTestCase extends AbstractRamlTestCase
     @Test
     public void build()
     {
-        Raml raml = parseRaml("org/raml/tagresolver/pojo-validator-found.yaml");
+        IRaml raml = parseRaml("org/raml/tagresolver/pojo-validator-found.yaml");
 
         assertThat(raml.getSchemas().size(), is(2));
         assertThat(raml.getSchemas().get(0).get("userjson"), containsString("\"username\":{\"type\":\"string\",\"required\":true}"));
         assertThat(raml.getSchemas().get(1).get("userxml"), containsString("<xs:attribute name=\"username\" type=\"xs:string\" use=\"required\"/>"));
 
-        Map<ActionType,Action> actions = raml.getResources().get("/resource").getActions();
+        Map<ActionType,IAction> actions = raml.getResources().get("/resource").getActions();
 
         assertThat(actions.get(POST).getBody().get("application/json").getSchema(), containsString("\"username\":{\"type\":\"string\",\"required\":true}"));
         assertThat(actions.get(POST).getBody().get("text/xml").getSchema(), containsString("<xs:attribute name=\"username\" type=\"xs:string\" use=\"required\"/>"));

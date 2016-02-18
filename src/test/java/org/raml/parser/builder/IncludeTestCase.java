@@ -21,17 +21,20 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static org.raml.model.ActionType.GET;
-import static org.raml.model.ActionType.POST;
-import static org.raml.model.ActionType.PUT;
-import static org.raml.model.ParamType.BOOLEAN;
-import static org.raml.model.ParamType.INTEGER;
+import static org.raml.interfaces.model.ActionType.GET;
+import static org.raml.interfaces.model.ActionType.POST;
+import static org.raml.interfaces.model.ActionType.PUT;
+import static org.raml.interfaces.model.ParamType.BOOLEAN;
+import static org.raml.interfaces.model.ParamType.INTEGER;
 
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.raml.interfaces.model.IRaml;
+import org.raml.interfaces.model.IResource;
+import org.raml.interfaces.parser.rule.IValidationResult;
 import org.raml.model.Raml;
 import org.raml.model.Resource;
 import org.raml.parser.rule.ValidationResult;
@@ -56,7 +59,7 @@ public class IncludeTestCase extends AbstractRamlTestCase
     @Test
     public void testSingleLineString()
     {
-        Raml raml = parseRaml("org/raml/include/include-non-yaml-single-line.yaml");
+        IRaml raml = parseRaml("org/raml/include/include-non-yaml-single-line.yaml");
         assertThat(raml.getTitle(), is("included title"));
     }
 
@@ -64,7 +67,7 @@ public class IncludeTestCase extends AbstractRamlTestCase
     @Test
     public void testMultiLineString() throws Exception
     {
-        Raml raml = parseRaml("org/raml/include/include-non-yaml-multi-line.yaml");
+        IRaml raml = parseRaml("org/raml/include/include-non-yaml-multi-line.yaml");
         String multiLine = IOUtils.toString(this.getClass().getClassLoader().getResourceAsStream("org/raml/include/include-non-yaml-multi-line.txt"));
         assertThat(raml.getTitle(), is(multiLine));
     }
@@ -72,7 +75,7 @@ public class IncludeTestCase extends AbstractRamlTestCase
     @Test
     public void testYaml()
     {
-        Raml raml = parseRaml("org/raml/include/include-yaml.yaml");
+        IRaml raml = parseRaml("org/raml/include/include-yaml.yaml");
         assertThat(raml.getDocumentation().size(), is(2));
         assertThat(raml.getDocumentation().get(0).getTitle(), is("Home"));
         assertThat(raml.getDocumentation().get(0).getContent(), startsWith("Lorem ipsum"));
@@ -83,7 +86,7 @@ public class IncludeTestCase extends AbstractRamlTestCase
     @Test
     public void testRaml()
     {
-        Raml raml = parseRaml("org/raml/include/include-raml.raml");
+        IRaml raml = parseRaml("org/raml/include/include-raml.raml");
         assertThat(raml.getDocumentation().size(), is(2));
         assertThat(raml.getDocumentation().get(0).getTitle(), is("Home"));
         assertThat(raml.getDocumentation().get(0).getContent(), startsWith("Lorem ipsum"));
@@ -94,28 +97,28 @@ public class IncludeTestCase extends AbstractRamlTestCase
     @Test
     public void includeWithResourceTypeParam()
     {
-        Raml raml = parseRaml("org/raml/include/include-with-params.yaml");
+        IRaml raml = parseRaml("org/raml/include/include-with-params.yaml");
         assertThat(raml.getResources().get("/simple").getAction(GET).getDescription(), is("included title"));
     }
 
     @Test
     public void includeWithinParam()
     {
-        Raml raml = parseRaml("org/raml/include/include-within-param.yaml");
+        IRaml raml = parseRaml("org/raml/include/include-within-param.yaml");
         assertThat(raml.getResources().get("/simple").getAction(GET).getDescription(), is("included title"));
     }
 
     @Test
     public void includeWithinParamNested()
     {
-        Raml raml = parseRaml("org/raml/include/include-within-param-nested.yaml");
+        IRaml raml = parseRaml("org/raml/include/include-within-param-nested.yaml");
         assertThat(raml.getResources().get("/simple").getAction(GET).getDescription(), is("included title"));
     }
 
     @Test
     public void includeResourceTypeSequence()
     {
-        Raml raml = parseRaml("org/raml/include/include-resource-type-sequence.yaml");
+        IRaml raml = parseRaml("org/raml/include/include-resource-type-sequence.yaml");
         assertThat(raml.getResources().get("/simple").getActions().size(), is(1));
         assertThat(raml.getResources().get("/simple").getAction(GET).getDescription(), is("super"));
     }
@@ -123,7 +126,7 @@ public class IncludeTestCase extends AbstractRamlTestCase
     @Test
     public void includeResourceType()
     {
-        Raml raml = parseRaml("org/raml/include/include-resource-types.yaml");
+        IRaml raml = parseRaml("org/raml/include/include-resource-types.yaml");
         assertThat(raml.getResources().get("/simple").getActions().size(), is(1));
         assertThat(raml.getResources().get("/simple").getAction(GET).getDescription(), is("super"));
     }
@@ -132,7 +135,7 @@ public class IncludeTestCase extends AbstractRamlTestCase
     @Ignore //use local http server
     public void testHttpScalarResource()
     {
-        Raml raml = parseRaml("org/raml/include/include-http-non-yaml.yaml");
+        IRaml raml = parseRaml("org/raml/include/include-http-non-yaml.yaml");
         assertThat(raml.getDocumentation().size(), is(1));
         assertThat(raml.getDocumentation().get(0).getTitle(), is("Home"));
         assertThat(raml.getDocumentation().get(0).getContent(), startsWith("Stop the point-to-point madness"));
@@ -141,7 +144,7 @@ public class IncludeTestCase extends AbstractRamlTestCase
     @Test
     public void includeAction()
     {
-        Raml raml = parseRaml("org/raml/include/include-action.yaml");
+        IRaml raml = parseRaml("org/raml/include/include-action.yaml");
         assertThat(raml.getResources().get("/simple").getAction(GET).getDescription(), is("get something"));
     }
 
@@ -151,7 +154,7 @@ public class IncludeTestCase extends AbstractRamlTestCase
         String ramlSource = "org/raml/include/include-sequence.yaml";
         List<ValidationResult> validationResults = validateRaml(ramlSource);
         assertThat(validationResults.size(), is(0));
-        Raml raml = parseRaml(ramlSource);
+        IRaml raml = parseRaml(ramlSource);
 
         assertThat(raml.getResources().get("/main").getAction(POST).getBody().get("application/json").getSchema(), is("main"));
         assertThat(raml.getSchemas().get(0).get("main"), containsString("employeeId"));
@@ -173,7 +176,7 @@ public class IncludeTestCase extends AbstractRamlTestCase
         List<ValidationResult> validationResults = validateRaml(ramlSource);
         assertThat(validationResults.size(), is(0));
 
-        Raml raml = parseRaml(ramlSource);
+        IRaml raml = parseRaml(ramlSource);
         assertThat(raml.getResource("/main").getAction(GET).getQueryParameters().size(), is(2));
         assertThat(raml.getResource("/main").getAction(GET).getHeaders().size(), is(1));
     }
@@ -207,8 +210,8 @@ public class IncludeTestCase extends AbstractRamlTestCase
     public void includeRelativeParent()
     {
         String location = "org/raml/parser/rules/includesRelative.yaml";
-        Raml raml = parseRaml(location);
-        Resource resource = raml.getResource("/collection/{element}/subcollection");
+        IRaml raml = parseRaml(location);
+        IResource resource = raml.getResource("/collection/{element}/subcollection");
         String schema = resource.getAction(GET).getResponses()
                 .get("200").getBody().get("application/json").getSchema();
         assertThat(schema, notNullValue());

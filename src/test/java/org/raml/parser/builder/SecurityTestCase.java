@@ -23,6 +23,8 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.raml.interfaces.model.IRaml;
+import org.raml.interfaces.parser.rule.IValidationResult;
 import org.raml.model.Raml;
 import org.raml.parser.rule.ValidationResult;
 
@@ -30,7 +32,7 @@ public class SecurityTestCase extends AbstractRamlTestCase
 {
 
     private static final String ramlSource = "org/raml/security.yaml";
-    private static Raml raml;
+    private static IRaml raml;
 
     @BeforeClass
     public static void init()
