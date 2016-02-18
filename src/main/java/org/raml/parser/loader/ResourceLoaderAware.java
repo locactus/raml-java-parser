@@ -15,6 +15,8 @@
  */
 package org.raml.parser.loader;
 
+import org.raml.interfaces.parser.loader.ResourceLoader;
+
 public interface ResourceLoaderAware
 {
 

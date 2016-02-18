@@ -27,7 +27,7 @@ import javax.xml.validation.SchemaFactory;
 
 import org.apache.commons.lang.StringUtils;
 import org.raml.parser.XsdResourceResolver;
-import org.raml.parser.loader.ResourceLoader;
+import org.raml.interfaces.parser.loader.ResourceLoader;
 import org.raml.parser.tagresolver.ContextPath;
 import org.raml.parser.tagresolver.IncludeResolver;
 import org.yaml.snakeyaml.nodes.ScalarNode;

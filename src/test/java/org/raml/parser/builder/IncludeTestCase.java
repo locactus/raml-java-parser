@@ -21,11 +21,11 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static org.raml.model.ActionType.GET;
-import static org.raml.model.ActionType.POST;
-import static org.raml.model.ActionType.PUT;
-import static org.raml.model.ParamType.BOOLEAN;
-import static org.raml.model.ParamType.INTEGER;
+import static org.raml.interfaces.model.ActionType.GET;
+import static org.raml.interfaces.model.ActionType.POST;
+import static org.raml.interfaces.model.ActionType.PUT;
+import static org.raml.interfaces.model.ParamType.BOOLEAN;
+import static org.raml.interfaces.model.ParamType.INTEGER;
 
 import java.util.List;
 

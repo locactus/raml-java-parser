@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import org.raml.interfaces.parser.loader.ResourceLoader;
+
 public class UrlResourceLoader implements ResourceLoader
 {
 

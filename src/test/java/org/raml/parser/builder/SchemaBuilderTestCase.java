@@ -18,7 +18,7 @@ package org.raml.parser.builder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
-import static org.raml.model.ActionType.GET;
+import static org.raml.interfaces.model.ActionType.GET;
 
 import javax.xml.validation.Schema;
 

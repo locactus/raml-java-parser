@@ -18,7 +18,7 @@ package org.raml.integration;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.raml.model.ActionType.GET;
+import static org.raml.interfaces.model.ActionType.GET;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +27,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.raml.model.Action;
-import org.raml.model.ActionType;
+import org.raml.interfaces.model.ActionType;
 import org.raml.model.Raml;
 import org.raml.model.Resource;
 import org.raml.model.parameter.QueryParameter;

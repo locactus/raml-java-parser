@@ -17,7 +17,7 @@ package org.raml.parser.builder;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.raml.model.ActionType.POST;
+import static org.raml.interfaces.model.ActionType.POST;
 
 import java.util.List;
 import java.util.Map;
@@ -25,8 +25,8 @@ import java.util.Map;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
-import org.raml.model.ActionType;
-import org.raml.model.ParamType;
+import org.raml.interfaces.model.ActionType;
+import org.raml.interfaces.model.ParamType;
 import org.raml.model.Raml;
 import org.raml.model.parameter.FormParameter;
 import org.raml.model.parameter.QueryParameter;

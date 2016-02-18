@@ -20,9 +20,10 @@ import static org.yaml.snakeyaml.nodes.NodeId.scalar;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.raml.parser.loader.ResourceLoader;
+import org.raml.interfaces.parser.loader.ResourceLoader;
+import org.raml.interfaces.parser.tagresolver.TagResolver;
 import org.raml.parser.utils.StreamUtils;
-import org.raml.parser.visitor.NodeHandler;
+import org.raml.interfaces.parser.visitor.NodeHandler;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.NodeId;

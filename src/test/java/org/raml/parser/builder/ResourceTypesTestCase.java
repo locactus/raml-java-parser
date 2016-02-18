@@ -20,7 +20,7 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.raml.model.ActionType;
+import org.raml.interfaces.model.ActionType;
 import org.raml.model.Raml;
 import org.raml.model.Resource;
 

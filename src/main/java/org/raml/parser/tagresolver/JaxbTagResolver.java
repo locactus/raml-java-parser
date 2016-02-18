@@ -23,8 +23,9 @@ import javax.xml.bind.SchemaOutputResolver;
 import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
 
-import org.raml.parser.loader.ResourceLoader;
-import org.raml.parser.visitor.NodeHandler;
+import org.raml.interfaces.parser.loader.ResourceLoader;
+import org.raml.interfaces.parser.tagresolver.TagResolver;
+import org.raml.interfaces.parser.visitor.NodeHandler;
 import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.ScalarNode;

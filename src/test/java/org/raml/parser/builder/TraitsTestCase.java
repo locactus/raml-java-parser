@@ -18,13 +18,13 @@ package org.raml.parser.builder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.raml.model.ActionType.GET;
-import static org.raml.model.ActionType.POST;
+import static org.raml.interfaces.model.ActionType.GET;
+import static org.raml.interfaces.model.ActionType.POST;
 
 import java.util.Map;
 
 import org.junit.Test;
-import org.raml.model.ParamType;
+import org.raml.interfaces.model.ParamType;
 import org.raml.model.Raml;
 import org.raml.model.parameter.QueryParameter;
 

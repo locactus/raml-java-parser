@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.raml.model.Action;
-import org.raml.model.ActionType;
+import org.raml.interfaces.model.ActionType;
 import org.raml.model.MimeType;
 import org.raml.model.Resource;
 import org.raml.model.Response;

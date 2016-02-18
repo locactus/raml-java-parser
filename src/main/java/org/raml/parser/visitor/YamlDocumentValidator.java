@@ -17,8 +17,8 @@ package org.raml.parser.visitor;
 
 import static org.raml.parser.rule.ValidationMessage.NON_SCALAR_KEY_MESSAGE;
 import static org.raml.parser.rule.ValidationResult.createErrorResult;
-import static org.raml.parser.visitor.TupleType.KEY;
-import static org.raml.parser.visitor.TupleType.VALUE;
+import static org.raml.interfaces.parser.visitor.TupleType.KEY;
+import static org.raml.interfaces.parser.visitor.TupleType.VALUE;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +26,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
-import org.raml.parser.loader.ResourceLoader;
+import org.raml.interfaces.parser.loader.ResourceLoader;
+import org.raml.interfaces.parser.visitor.TupleType;
 import org.raml.parser.loader.ResourceLoaderAware;
 import org.raml.parser.rule.DefaultTupleRule;
 import org.raml.parser.rule.NodeRule;

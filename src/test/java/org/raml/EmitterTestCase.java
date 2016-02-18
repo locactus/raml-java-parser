@@ -19,8 +19,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
-import static org.raml.model.ActionType.GET;
-import static org.raml.model.ActionType.HEAD;
+import static org.raml.interfaces.model.ActionType.GET;
+import static org.raml.interfaces.model.ActionType.HEAD;
 
 import java.util.List;
 import java.util.Map;

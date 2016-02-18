@@ -18,18 +18,18 @@ package org.raml.parser.builder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
-import static org.raml.model.ActionType.PUT;
+import static org.raml.interfaces.model.ActionType.PUT;
 
 import java.util.List;
 
 import org.junit.Test;
 import org.raml.model.Raml;
 import org.raml.parser.loader.DefaultResourceLoader;
-import org.raml.parser.loader.ResourceLoader;
+import org.raml.interfaces.parser.loader.ResourceLoader;
 import org.raml.parser.rule.ValidationResult;
-import org.raml.parser.visitor.NodeHandler;
+import org.raml.interfaces.parser.visitor.NodeHandler;
 import org.raml.parser.visitor.RamlDocumentBuilder;
-import org.raml.parser.tagresolver.TagResolver;
+import org.raml.interfaces.parser.tagresolver.TagResolver;
 import org.raml.parser.visitor.RamlValidationService;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.ScalarNode;

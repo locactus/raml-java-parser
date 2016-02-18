@@ -17,12 +17,12 @@ package org.raml.parser.builder;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.raml.model.ActionType.GET;
-import static org.raml.model.ParamType.BOOLEAN;
-import static org.raml.model.ParamType.DATE;
-import static org.raml.model.ParamType.INTEGER;
-import static org.raml.model.ParamType.NUMBER;
-import static org.raml.model.ParamType.STRING;
+import static org.raml.interfaces.model.ActionType.GET;
+import static org.raml.interfaces.model.ParamType.BOOLEAN;
+import static org.raml.interfaces.model.ParamType.DATE;
+import static org.raml.interfaces.model.ParamType.INTEGER;
+import static org.raml.interfaces.model.ParamType.NUMBER;
+import static org.raml.interfaces.model.ParamType.STRING;
 
 import java.math.BigDecimal;
 import java.util.List;

@@ -22,6 +22,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.raml.interfaces.model.ActionType;
 import org.raml.model.parameter.UriParameter;
 import org.raml.parser.annotation.Key;
 import org.raml.parser.annotation.Mapping;

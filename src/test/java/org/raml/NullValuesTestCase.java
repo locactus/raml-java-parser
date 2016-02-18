@@ -20,7 +20,7 @@ import static junit.framework.Assert.assertNotNull;
 import java.util.Map;
 
 import org.junit.Test;
-import org.raml.model.ActionType;
+import org.raml.interfaces.model.ActionType;
 import org.raml.model.MimeType;
 import org.raml.model.Raml;
 import org.raml.parser.builder.AbstractRamlTestCase;

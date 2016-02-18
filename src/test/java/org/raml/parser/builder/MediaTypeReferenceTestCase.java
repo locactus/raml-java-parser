@@ -17,7 +17,7 @@ package org.raml.parser.builder;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.raml.model.ActionType.PUT;
+import static org.raml.interfaces.model.ActionType.PUT;
 
 import org.junit.Ignore;
 import org.junit.Test;

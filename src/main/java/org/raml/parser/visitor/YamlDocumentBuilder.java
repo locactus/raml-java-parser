@@ -16,8 +16,8 @@
 package org.raml.parser.visitor;
 
 import static org.raml.parser.rule.ValidationMessage.NON_SCALAR_KEY_MESSAGE;
-import static org.raml.parser.visitor.TupleType.KEY;
-import static org.raml.parser.visitor.TupleType.VALUE;
+import static org.raml.interfaces.parser.visitor.TupleType.KEY;
+import static org.raml.interfaces.parser.visitor.TupleType.VALUE;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,16 +29,18 @@ import java.io.Writer;
 import java.util.Stack;
 
 import org.apache.commons.io.IOUtils;
+import org.raml.interfaces.parser.visitor.NodeHandler;
+import org.raml.interfaces.parser.visitor.TupleType;
 import org.raml.parser.builder.DefaultTupleBuilder;
 import org.raml.parser.builder.NodeBuilder;
 import org.raml.parser.builder.SequenceBuilder;
 import org.raml.parser.builder.TupleBuilder;
-import org.raml.parser.loader.ResourceLoader;
+import org.raml.interfaces.parser.loader.ResourceLoader;
 import org.raml.parser.resolver.DefaultTupleHandler;
 import org.raml.parser.tagresolver.ContextPath;
 import org.raml.parser.tagresolver.ContextPathAware;
 import org.raml.parser.tagresolver.IncludeResolver;
-import org.raml.parser.tagresolver.TagResolver;
+import org.raml.interfaces.parser.tagresolver.TagResolver;
 import org.raml.parser.utils.StreamUtils;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;

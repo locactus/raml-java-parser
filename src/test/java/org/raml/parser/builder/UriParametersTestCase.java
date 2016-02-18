@@ -21,7 +21,7 @@ import static org.junit.Assert.assertThat;
 import java.util.Map;
 
 import org.junit.Test;
-import org.raml.model.ParamType;
+import org.raml.interfaces.model.ParamType;
 import org.raml.model.Raml;
 import org.raml.model.Resource;
 

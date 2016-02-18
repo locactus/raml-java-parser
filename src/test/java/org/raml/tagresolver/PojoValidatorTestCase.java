@@ -18,16 +18,16 @@ package org.raml.tagresolver;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
-import static org.raml.model.ActionType.PATCH;
-import static org.raml.model.ActionType.POST;
-import static org.raml.model.ActionType.PUT;
+import static org.raml.interfaces.model.ActionType.PATCH;
+import static org.raml.interfaces.model.ActionType.POST;
+import static org.raml.interfaces.model.ActionType.PUT;
 
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
 import org.raml.model.Action;
-import org.raml.model.ActionType;
+import org.raml.interfaces.model.ActionType;
 import org.raml.model.Raml;
 import org.raml.parser.builder.AbstractRamlTestCase;
 import org.raml.parser.rule.ValidationResult;

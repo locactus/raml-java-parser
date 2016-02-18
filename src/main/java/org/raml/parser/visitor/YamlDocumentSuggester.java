@@ -25,6 +25,8 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.raml.emitter.RamlEmitter;
+import org.raml.interfaces.parser.visitor.NodeHandler;
+import org.raml.interfaces.parser.visitor.TupleType;
 import org.raml.parser.builder.NodeBuilder;
 import org.raml.parser.builder.TupleBuilder;
 import org.raml.parser.completion.DefaultSuggestion;
