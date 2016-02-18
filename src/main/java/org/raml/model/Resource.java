@@ -22,7 +22,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.raml.model.parameter.UriParameter;
+import org.raml.interfaces.model.ActionType;
+import org.raml.interfaces.model.IAction;
+import org.raml.interfaces.model.IResource;
+import org.raml.interfaces.model.ISecurityReference;
+import org.raml.interfaces.model.parameter.IParameter;
 import org.raml.parser.annotation.Key;
 import org.raml.parser.annotation.Mapping;
 import org.raml.parser.annotation.Parent;
@@ -31,7 +35,7 @@ import org.raml.parser.annotation.Sequence;
 import org.raml.parser.resolver.ResourceHandler;
 import org.raml.parser.rule.SecurityReferenceSequenceRule;
 
-public class Resource implements Serializable
+public class Resource implements Serializable, IResource
 {
 
     private static final long serialVersionUID = -1039592210175332252L;
@@ -52,7 +56,7 @@ public class Resource implements Serializable
     private String relativeUri;
 
     @Mapping
-    private Map<String, UriParameter> uriParameters = new LinkedHashMap<String, UriParameter>();
+    private Map<String, IParameter> uriParameters = new LinkedHashMap<String, IParameter>();
 
     @Scalar
     private String type;
@@ -61,16 +65,16 @@ public class Resource implements Serializable
     private List<String> is = new ArrayList<String>();
 
     @Sequence(rule = SecurityReferenceSequenceRule.class)
-    private List<SecurityReference> securedBy = new ArrayList<SecurityReference>();
+    private List<ISecurityReference> securedBy = new ArrayList<ISecurityReference>();
 
     @Mapping(rule = org.raml.parser.rule.UriParametersRule.class)
-    private Map<String, List<UriParameter>> baseUriParameters = new LinkedHashMap<String, List<UriParameter>>();
+    private Map<String, List<IParameter>> baseUriParameters = new LinkedHashMap<String, List<IParameter>>();
 
     @Mapping(implicit = true)
-    private Map<ActionType, Action> actions = new LinkedHashMap<ActionType, Action>();
+    private Map<org.raml.interfaces.model.ActionType, IAction> actions = new LinkedHashMap<org.raml.interfaces.model.ActionType, IAction>();
 
     @Mapping(handler = ResourceHandler.class, implicit = true)
-    private Map<String, Resource> resources = new LinkedHashMap<String, Resource>();
+    private Map<String, IResource> resources = new LinkedHashMap<String, IResource>();
 
     public Resource()
     {
@@ -91,17 +95,17 @@ public class Resource implements Serializable
         this.parentUri = parentUri;
     }
 
-    public void setUriParameters(Map<String, UriParameter> uriParameters)
+    public void setUriParameters(Map<String, IParameter> uriParameters)
     {
         this.uriParameters = uriParameters;
     }
 
-    public Map<ActionType, Action> getActions()
+    public Map<org.raml.interfaces.model.ActionType, IAction> getActions()
     {
         return actions;
     }
 
-    public void setActions(Map<ActionType, Action> actions)
+    public void setActions(Map<ActionType, IAction> actions)
     {
         this.actions = actions;
     }
@@ -136,27 +140,27 @@ public class Resource implements Serializable
         return parentUri + relativeUri;
     }
 
-    public Action getAction(ActionType name)
+    public IAction getAction(org.raml.interfaces.model.ActionType name)
     {
         return actions.get(name);
     }
 
-    public Action getAction(String name)
+    public IAction getAction(String name)
     {
         return actions.get(ActionType.valueOf(name.toUpperCase()));
     }
 
-    public Map<String, Resource> getResources()
+    public Map<String, IResource> getResources()
     {
         return resources;
     }
 
-    public void setResources(Map<String, Resource> resources)
+    public void setResources(Map<String, IResource> resources)
     {
         this.resources = resources;
     }
 
-    public Map<String, UriParameter> getUriParameters()
+    public Map<String, IParameter> getUriParameters()
     {
         return uriParameters;
     }
@@ -165,11 +169,11 @@ public class Resource implements Serializable
      * @return URI parameters defined for the current resource plus
      * all URI parameters defined in the resource hierarchy
      */
-    public Map<String, UriParameter> getResolvedUriParameters()
+    public Map<String, IParameter> getResolvedUriParameters()
     {
         if (parentResource != null)
         {
-            Map<String, UriParameter> uriParams = new HashMap<String, UriParameter>(parentResource.getResolvedUriParameters());
+            Map<String, IParameter> uriParams = new HashMap<String, IParameter>(parentResource.getResolvedUriParameters());
             uriParams.putAll(uriParameters);
             return uriParams;
         }
@@ -196,22 +200,22 @@ public class Resource implements Serializable
         this.type = type;
     }
 
-    public List<SecurityReference> getSecuredBy()
+    public List<ISecurityReference> getSecuredBy()
     {
         return securedBy;
     }
 
-    public void setSecuredBy(List<SecurityReference> securedBy)
+    public void setSecuredBy(List<ISecurityReference> securedBy)
     {
         this.securedBy = securedBy;
     }
 
-    public Map<String, List<UriParameter>> getBaseUriParameters()
+    public Map<String, List<IParameter>> getBaseUriParameters()
     {
         return baseUriParameters;
     }
 
-    public void setBaseUriParameters(Map<String, List<UriParameter>> baseUriParameters)
+    public void setBaseUriParameters(Map<String, List<IParameter>> baseUriParameters)
     {
         this.baseUriParameters = baseUriParameters;
     }
@@ -249,9 +253,9 @@ public class Resource implements Serializable
                ", uri='" + (parentUri != null ? getUri() : "-") + "'}";
     }
 
-    public Resource getResource(String path)
+    public IResource getResource(String path)
     {
-        for (Resource resource : resources.values())
+        for (IResource resource : resources.values())
         {
             if (path.startsWith(resource.getRelativeUri()))
             {

@@ -19,12 +19,15 @@ import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.raml.interfaces.model.IMimeType;
+import org.raml.interfaces.model.IResponse;
+import org.raml.interfaces.model.parameter.IParameter;
 import org.raml.model.parameter.Header;
 import org.raml.parser.annotation.Mapping;
 import org.raml.parser.annotation.Scalar;
 import org.raml.parser.resolver.MimeTypeHandler;
 
-public class Response implements Serializable
+public class Response implements Serializable, IResponse
 {
 
     private static final long serialVersionUID = 5492447634029702499L;
@@ -33,17 +36,17 @@ public class Response implements Serializable
     private String description;
 
     @Mapping(innerHandler = MimeTypeHandler.class)
-    private Map<String, MimeType> body;
+    private Map<String, IMimeType> body;
 
     @Mapping
-    private Map<String, Header> headers = new LinkedHashMap<String, Header>();
+    private Map<String, IParameter> headers = new LinkedHashMap<String, IParameter>();
 
-    public Map<String, Header> getHeaders()
+    public Map<String, IParameter> getHeaders()
     {
         return headers;
     }
 
-    public void setHeaders(Map<String, Header> headers)
+    public void setHeaders(Map<String, IParameter> headers)
     {
         this.headers = headers;
     }
@@ -58,12 +61,12 @@ public class Response implements Serializable
         this.description = description;
     }
 
-    public void setBody(Map<String, MimeType> body)
+    public void setBody(Map<String, IMimeType> body)
     {
         this.body = body;
     }
 
-    public Map<String, MimeType> getBody()
+    public Map<String, IMimeType> getBody()
     {
         return body;
     }

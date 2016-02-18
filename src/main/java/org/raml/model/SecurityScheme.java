@@ -17,9 +17,12 @@ package org.raml.model;
 
 import java.io.Serializable;
 
+import org.raml.interfaces.model.ISecurityScheme;
+import org.raml.interfaces.model.ISecuritySchemeDescriptor;
+import org.raml.interfaces.model.ISecuritySettings;
 import org.raml.parser.annotation.Scalar;
 
-public class SecurityScheme implements Serializable
+public class SecurityScheme implements Serializable, ISecurityScheme
 {
 
     private static final long serialVersionUID = -6613409331454600471L;
@@ -31,10 +34,10 @@ public class SecurityScheme implements Serializable
     private String type;
 
     @Scalar
-    private SecuritySchemeDescriptor describedBy;
+    private ISecuritySchemeDescriptor describedBy;
 
     @Scalar
-    private SecuritySettings settings;
+    private ISecuritySettings settings;
 
     public String getDescription()
     {
@@ -56,23 +59,24 @@ public class SecurityScheme implements Serializable
         this.type = type;
     }
 
-    public SecuritySchemeDescriptor getDescribedBy()
+    public ISecuritySchemeDescriptor getDescribedBy()
     {
         return describedBy;
     }
 
-    public void setDescribedBy(SecuritySchemeDescriptor describedBy)
+    public void setDescribedBy(ISecuritySchemeDescriptor describedBy)
     {
         this.describedBy = describedBy;
     }
 
-    public SecuritySettings getSettings()
+    public ISecuritySettings getSettings()
     {
         return settings;
     }
 
-    public void setSettings(SecuritySettings settings)
+    public void setSettings(ISecuritySettings settings)
     {
         this.settings = settings;
     }
+
 }

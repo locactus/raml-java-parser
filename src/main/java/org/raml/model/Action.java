@@ -21,9 +21,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.raml.model.parameter.Header;
-import org.raml.model.parameter.QueryParameter;
-import org.raml.model.parameter.UriParameter;
+import org.raml.interfaces.model.ActionType;
+import org.raml.interfaces.model.IAction;
+import org.raml.interfaces.model.IMimeType;
+import org.raml.interfaces.model.IResponse;
+import org.raml.interfaces.model.ISecurityReference;
+import org.raml.interfaces.model.Protocol;
+import org.raml.interfaces.model.parameter.IParameter;
 import org.raml.parser.annotation.Key;
 import org.raml.parser.annotation.Mapping;
 import org.raml.parser.annotation.Parent;
@@ -33,7 +37,7 @@ import org.raml.parser.resolver.MimeTypeHandler;
 import org.raml.parser.resolver.ResponseHandler;
 import org.raml.parser.rule.SecurityReferenceSequenceRule;
 
-public class Action implements Serializable
+public class Action implements Serializable, IAction
 {
 
     private static final long serialVersionUID = 8444315314405971949L;
@@ -48,16 +52,16 @@ public class Action implements Serializable
     private String displayName;
 
     @Mapping
-    private Map<String, Header> headers = new LinkedHashMap<String, Header>();
+    private Map<String, IParameter> headers = new LinkedHashMap<String, IParameter>();
 
     @Mapping
-    private Map<String, QueryParameter> queryParameters = new LinkedHashMap<String, QueryParameter>();
+    private Map<String, IParameter> queryParameters = new LinkedHashMap<String, IParameter>();
 
     @Mapping(innerHandler = MimeTypeHandler.class)
-    private Map<String, MimeType> body;
+    private Map<String, IMimeType> body;
 
     @Mapping(innerHandler = ResponseHandler.class)
-    private Map<String, Response> responses = new LinkedHashMap<String, Response>();
+    private Map<String, IResponse> responses = new LinkedHashMap<String, IResponse>();
 
     @Parent
     private Resource resource;
@@ -69,10 +73,10 @@ public class Action implements Serializable
     private List<Protocol> protocols = new ArrayList<Protocol>();
 
     @Sequence(rule = SecurityReferenceSequenceRule.class)
-    private List<SecurityReference> securedBy = new ArrayList<SecurityReference>();
+    private List<ISecurityReference> securedBy = new ArrayList<ISecurityReference>();
 
     @Mapping(rule = org.raml.parser.rule.UriParametersRule.class)
-    private Map<String, List<UriParameter>> baseUriParameters = new LinkedHashMap<String, List<UriParameter>>();
+    private Map<String, List<IParameter>> baseUriParameters = new LinkedHashMap<String, List<IParameter>>();
 
     public Action()
     {
@@ -98,32 +102,32 @@ public class Action implements Serializable
         this.description = description;
     }
 
-    public Map<String, Header> getHeaders()
+    public Map<String, IParameter> getHeaders()
     {
         return headers;
     }
 
-    public void setHeaders(Map<String, Header> headers)
+    public void setHeaders(Map<String, IParameter> headers)
     {
         this.headers = headers;
     }
 
-    public Map<String, QueryParameter> getQueryParameters()
+    public Map<String, IParameter> getQueryParameters()
     {
         return queryParameters;
     }
 
-    public void setQueryParameters(Map<String, QueryParameter> queryParameters)
+    public void setQueryParameters(Map<String, IParameter> queryParameters)
     {
         this.queryParameters = queryParameters;
     }
 
-    public Map<String, MimeType> getBody()
+    public Map<String, IMimeType> getBody()
     {
         return body;
     }
 
-    public void setBody(Map<String, MimeType> body)
+    public void setBody(Map<String, IMimeType> body)
     {
         this.body = body;
     }
@@ -133,12 +137,12 @@ public class Action implements Serializable
         return body != null && !body.isEmpty();
     }
 
-    public Map<String, Response> getResponses()
+    public Map<String, IResponse> getResponses()
     {
         return responses;
     }
 
-    public void setResponses(Map<String, Response> responses)
+    public void setResponses(Map<String, IResponse> responses)
     {
         this.responses = responses;
     }
@@ -173,22 +177,22 @@ public class Action implements Serializable
         this.protocols = protocols;
     }
 
-    public List<SecurityReference> getSecuredBy()
+    public List<ISecurityReference> getSecuredBy()
     {
         return securedBy;
     }
 
-    public void setSecuredBy(List<SecurityReference> securedBy)
+    public void setSecuredBy(List<ISecurityReference> securedBy)
     {
         this.securedBy = securedBy;
     }
 
-    public Map<String, List<UriParameter>> getBaseUriParameters()
+    public Map<String, List<IParameter>> getBaseUriParameters()
     {
         return baseUriParameters;
     }
 
-    public void setBaseUriParameters(Map<String, List<UriParameter>> baseUriParameters)
+    public void setBaseUriParameters(Map<String, List<IParameter>> baseUriParameters)
     {
         this.baseUriParameters = baseUriParameters;
     }

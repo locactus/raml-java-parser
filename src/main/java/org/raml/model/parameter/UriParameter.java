@@ -15,7 +15,7 @@
  */
 package org.raml.model.parameter;
 
-import static org.raml.model.ParamType.STRING;
+import static org.raml.interfaces.model.ParamType.STRING;
 
 public class UriParameter extends AbstractParam
 {

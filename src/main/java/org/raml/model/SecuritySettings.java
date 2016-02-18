@@ -19,10 +19,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.raml.interfaces.model.ISecuritySettings;
 import org.raml.parser.annotation.Scalar;
 import org.raml.parser.annotation.Sequence;
 
-public class SecuritySettings implements Serializable
+public class SecuritySettings implements Serializable, ISecuritySettings
 {
 
     private static final long serialVersionUID = -4243573177407087911L;
