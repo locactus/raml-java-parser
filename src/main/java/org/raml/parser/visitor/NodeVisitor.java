@@ -16,19 +16,21 @@
 package org.raml.parser.visitor;
 
 import static org.raml.parser.utils.NodeUtils.isStandardTag;
-import static org.raml.parser.visitor.TupleType.KEY;
-import static org.raml.parser.visitor.TupleType.VALUE;
+import static org.raml.interfaces.parser.visitor.TupleType.KEY;
+import static org.raml.interfaces.parser.visitor.TupleType.VALUE;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-import org.raml.parser.loader.ResourceLoader;
+import org.raml.interfaces.parser.loader.ResourceLoader;
+import org.raml.interfaces.parser.visitor.NodeHandler;
+import org.raml.interfaces.parser.visitor.TupleType;
 import org.raml.parser.loader.ResourceLoaderAware;
 import org.raml.parser.tagresolver.ContextPath;
 import org.raml.parser.tagresolver.ContextPathAware;
-import org.raml.parser.tagresolver.TagResolver;
+import org.raml.interfaces.parser.tagresolver.TagResolver;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;

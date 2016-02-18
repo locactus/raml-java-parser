@@ -17,6 +17,7 @@ package org.raml.parser.visitor;
 
 import java.util.List;
 
+import org.raml.interfaces.parser.visitor.NodeHandler;
 import org.raml.parser.loader.ResourceLoaderAware;
 import org.raml.parser.rule.ValidationResult;
 import org.raml.parser.tagresolver.ContextPathAware;

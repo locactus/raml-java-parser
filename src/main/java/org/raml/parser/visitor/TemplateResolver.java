@@ -35,10 +35,11 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.raml.interfaces.parser.visitor.NodeHandler;
 import org.raml.model.Action;
-import org.raml.model.ActionType;
+import org.raml.interfaces.model.ActionType;
 import org.raml.model.Resource;
-import org.raml.parser.loader.ResourceLoader;
+import org.raml.interfaces.parser.loader.ResourceLoader;
 import org.raml.parser.rule.ValidationResult;
 import org.raml.parser.tagresolver.ContextPathAware;
 import org.raml.parser.tagresolver.IncludeResolver;
